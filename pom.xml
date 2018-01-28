@@ -71,7 +71,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>8.6.0</version>
                 <configuration>
-                    <mainClass>tech.ugma.customcomponents.DemoTributeFX</mainClass>
+                    <mainClass>tech.ugma.customcomponents.tributefx.DemoTributeFX</mainClass>
                     <jfxMainAppJarName>DemoTributeFX.jar</jfxMainAppJarName>
                 </configuration>
                 <executions>
