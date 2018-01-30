@@ -1,0 +1,14 @@
+/*The container that you can mention people in*/
+.mentionable-container {
+    outline: 2px red;
+    font-family: Lucida Bright;
+    font-size: 12px;
+    font-weight: regular;
+}
+/*The actual mention, like '@Jamie'*/
+.mention {
+    color: blue;
+}
+
+/*Use `webEngine.setUserStyleSheetLocation(getClass().getResource("style.css").toString());`
+to style things *within* a WebView*/
