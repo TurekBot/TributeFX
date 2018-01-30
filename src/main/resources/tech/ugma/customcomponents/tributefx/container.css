@@ -1,14 +1,33 @@
-/*The container that you can mention people in*/
-.mentionable-container {
-    outline: 2px red;
-    font-family: Lucida Bright;
-    font-size: 12px;
-    font-weight: regular;
-}
-/*The actual mention, like '@Jamie'*/
 .mention {
-    color: blue;
+  color: gray;
 }
 
-/*Use `webEngine.setUserStyleSheetLocation(getClass().getResource("style.css").toString());`
-to style things *within* a WebView*/
+.hashtag {
+  color: red;
+}
+
+/*We have to make the body and the container both 100%, so that you can click any
+where in the body and get a cursor.*/
+body {
+  width: 100%;
+  height: 100vh;
+  margin: 0px;
+
+  outline: 2px red;
+  font-family: Lucida Bright;
+  font-size: 12px;
+  font-weight: regular;
+}
+
+#container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+#prompt-text {
+  color: grey;
+  /*opacity: .5;*/
+  /*position: absolute;*/
+  /*bottom: 20%;*/
+}

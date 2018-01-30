@@ -12,7 +12,8 @@ public class DemoTributeFX extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         WebView textArea = new WebView();
-        TributeFX.convertWebView(textArea);
+
+        TributeFX.configureWebView(textArea);
 
         AnchorPane root = new AnchorPane(textArea);
         root.setPadding(new Insets(20));

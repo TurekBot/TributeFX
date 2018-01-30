@@ -1,31 +1,33 @@
 package tech.ugma.customcomponents.tributefx;
 
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+
+import java.net.URL;
+
 public class TributeFX {
 
-    private String defaultHtml =
+    private static String defaultHtml =
             "<!DOCTYPE html>\n" +
-                    "<html lang=\"en\">\n" +
-                    "<body>\n" +
-                    "    <script>document.write(\"1\");</script>" +
-                    "    <!--Load the files of the @mention library (called Tribute)-->\n" +
+                    "<html>\n" +
+                    "  <head>\n" +
+                    "  <base/>" +
+                    "  </head>\n" +
+                    "  <!-- We set the body's contenteditable to false so that the user\n" +
+                    "       doesn't delete any of the configuration that gets put in the body.-->\n" +
+                    "  <body contenteditable=\"false\">\n" +
+                    "    <!-- This is the only thing the user can edit -->\n" +
+                    "    <div contenteditable=\"true\" id=\"container\"></div>\n" +
+                    "\n" +
                     "    <link rel=\"stylesheet\" href=\"tribute-js/tribute.css\" />\n" +
-                    "    <script>document.write(\"2\");</script>" +
                     "    <script src=\"tribute-js/tribute.js\"></script>\n" +
-                    "    <script>document.write(\"3\");</script>" +
                     "\n" +
-                    "    <!--This is the container that we're going to attach the jtribute to.-->\n" +
-                    "    <div contenteditable=\"true\" class=\"mentionable-container\">I'm alive!</div>\n" +
-                    "    <script>document.write(\"4\");</script>" +
-                    "    <!--And this is the stylesheet that goes along with the container.-->\n" +
                     "    <link rel=\"stylesheet\" href=\"container.css\" />\n" +
-                    "    <script>document.write(\"5\");</script>" +
+                    "    <script src=\"configureTribute.js\"></script>\n" +
+                    "    <script src=\"configureContainer.js\"></script>\n" +
                     "\n" +
-                    "    <!--This script builds the Tribute object and attaches it to the container-->\n" +
-                    "    <script src=\"../../../startTribute.js\"> </script>\n" +
-                    "    <script>document.write(\"6\");</script>" +
-                    "    <script>var href = window.location.href; document.write(href);</script>" +
-
-                    "</body>\n" +
+                    "\n" +
+                    "  </body>\n" +
                     "</html>";
 
     private String defaultTributeConfiguration = "";
@@ -37,5 +39,21 @@ public class TributeFX {
 
     public String getTributeConfiguration() {
         return null;
+    }
+
+    public static void configureWebView(WebView toConfigure) {
+        WebEngine webEngine = toConfigure.getEngine();
+
+        URL url = TributeFX.class.getResource("configureTribute.js");
+
+        String baseUrl = url.toExternalForm().substring(0, url.toExternalForm().lastIndexOf("/") + 1);
+
+        System.out.println(url.toExternalForm());
+        System.out.println(baseUrl);
+
+        defaultHtml = defaultHtml.replace("<base/>", "<base href=\"" + baseUrl + "\"/>");
+
+        webEngine.loadContent(defaultHtml);
+
     }
 }
