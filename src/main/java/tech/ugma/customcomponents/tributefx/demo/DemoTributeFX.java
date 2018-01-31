@@ -1,6 +1,7 @@
 package tech.ugma.customcomponents.tributefx.demo;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -34,6 +35,10 @@ public class DemoTributeFX extends Application {
 
         TributeFX.configureWebView(webView, demoConfig);
 
+        Platform.runLater(() -> {
+            TributeFX.addMentionables(mentionables, webView.getEngine());
+        });
+
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(20));
         Label comment = new Label("Comment");
@@ -47,6 +52,7 @@ public class DemoTributeFX extends Application {
         primaryStage.setTitle("TributeFX Demo");
         primaryStage.setScene(theScene);
         primaryStage.show();
+
     }
 
     private ArrayList<Person> createList() {

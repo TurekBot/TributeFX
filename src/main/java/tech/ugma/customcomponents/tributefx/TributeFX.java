@@ -62,6 +62,7 @@ public class TributeFX {
         configureWebView(webView, null, null);
     }
 
+    // TODO: 1/31/2018 Go through and make sure all is well for using this method multiple times on the same webView—no duplicate stuff.
     protected static void configureWebView(WebView webView, ArrayList<? extends Mentionable> mentionables, URL customConfigURL) {
         WebEngine webEngine = webView.getEngine();
 
@@ -153,34 +154,53 @@ public class TributeFX {
 
         String configurationFile = readFile(configuration);
 
-        executeLater(webEngine, configurationFile);
+        executeJavaScriptCommands(webEngine, configurationFile);
     }
 
-//    /**
-//     * Use this if you're using the <b>default configuration</b>.
-//     * <p>
-//     * This will add your mentionables to the tribute, so that they'll show up when the user types "@"
-//     * <p>
-//     * For custom tribute configurations <small>(where you may have changed/multiple tribute variable names)</small> use {@link TributeFX#addMentionables(ArrayList, WebEngine)}
-//     */
-//    appendMentionables(webEngine, mentionables)
-//
-//    appendMentionables(webEngine, mentionables, tributeVariableName, collectionIndex)
+    /**
+     * Use this if you're using the <b>default configuration</b>.
+     * <p>
+     * This will add your mentionables to the tribute, so that they'll show up when the user types "@"
+     * <p>
+     * For custom tribute configurations <small>(where you may have changed/multiple tribute variable names)</small> use {@link TributeFX#addMentionables(java.util.ArrayList, javafx.scene.web.WebEngine, java.lang.String, int)}
+     */
+    public static void addMentionables(ArrayList<? extends Mentionable> mentionables, WebEngine webEngine) {
+        addMentionables(mentionables, webEngine, "tribute", 0);
+    }
 
-    private static void addMentionables(ArrayList<? extends Mentionable> mentionables, WebEngine webEngine) {
-        StringBuilder sb = new StringBuilder();
+    /**
+     * Use this if you have a <b>custom configuration</b>.
+     * <p>
+     * This will add your <code>{@link Mentionable Mentionable}</code>s to the specified tribute, so that they'll show up when the user types the trigger character.
+     * <p>
+     * Be sure to specify the tribute variable's name ("tribute" if you kept it the same) and the collection's index
+     * (0 if you only have one).
+     * <p>
+     * <i>If you're using the defaults</i>, for convenience, use {@link TributeFX#addMentionables(ArrayList, WebEngine)}
+     */
+    public static void addMentionables(ArrayList<? extends Mentionable> mentionables, WebEngine webEngine, String tributeVariableName, int collectionIndex) {
+        //Build javascript list
+        StringBuilder list = new StringBuilder();
         for (int i = 0; i < mentionables.size(); i++) {
             Mentionable m = mentionables.get(i);
 
-            sb.append(m.toJsString());
+            list.append(m.toJsString());
 
             if (i < mentionables.size() - 1) {
                 //If it's not the last one, add a comma
-                sb.append(", ");
+                list.append(", \n");
             }
         }
-        String command = "tribute.append(0, [\n" + sb.toString() + "]);";
-        executeLater(webEngine, command);
+
+        // Build JavaScript command (a concatenation is used here because IntelliJ says it's *just as
+        // efficient* in this case)
+        String command = tributeVariableName + ".append(" +
+                collectionIndex + ", [\n" +
+                list.toString() +
+                "\n]);";
+
+        // Execute command as soon as document is loaded
+        executeJavaScriptCommands(webEngine, command);
     }
 
     private static void configurePromptText(WebEngine webEngine) {
@@ -189,7 +209,7 @@ public class TributeFX {
         final String replace = "PROMPT_TEXT_WILL_BE_REPLACED_HERE";
         promptTextConfigurationScript = promptTextConfigurationScript.replace(replace, promptText);
 
-        executeLater(webEngine, promptTextConfigurationScript);
+        executeJavaScriptCommands(webEngine, promptTextConfigurationScript);
     }
 
     /**
@@ -213,15 +233,21 @@ public class TributeFX {
         return fileContents;
     }
 
-    private static void executeLater(WebEngine webEngine, String commands) {
-        //We need to put anything that has to do with the container (like attaching a tribute to it)
-        //in a place that will only be invoked once the container/document is loaded.
-        webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-            Worker.State state = webEngine.getLoadWorker().getState();
-            if (state.equals(Worker.State.SUCCEEDED)) {
-                webEngine.executeScript(commands);
-            }
-        });
+    private static void executeJavaScriptCommands(WebEngine webEngine, String commands) {
+        Worker.State state = webEngine.getLoadWorker().getState();
+        System.out.println("Current State: " + webEngine.getLoadWorker().getState());
+        if (webEngine.getDocument() == null) {
+            //We need to put anything that has to do with the container (like attaching a tribute to it)
+            //in a place that will only be invoked once the container/document is loaded.
+            webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, currentState) -> {
+                System.out.println(webEngine.getLoadWorker().toString());
+                if (currentState.equals(Worker.State.SUCCEEDED)) {
+                    webEngine.executeScript(commands);
+                }
+            });
+        } else if (state.equals(Worker.State.READY) || state.equals(Worker.State.SUCCEEDED)) {
+            webEngine.executeScript(commands);
+        }
 
     }
 
