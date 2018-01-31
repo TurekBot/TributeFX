@@ -1,5 +1,10 @@
+/*
+Any changes made here take place *WITHIN* the html of the WebView.
+See webView.css to style the webView within the JavaFX scene graph.
+*/
+
 .mention {
-  color: gray;
+    color: gray;
 }
 
 .hashtag {

@@ -1,3 +1,14 @@
+/*
+ Any changes here style the WebView within the JavaFX Scene Graph.
+ To style the HTML contained within the WebView see container.css
+*/
+
+
+/* This kind of replicates the glow effect that other controls get. Unfortunately, WebView isn't a Control, and
+ so it doesn't have a -fx-background to use to make the glow effect. Maybe if you were to wrap it in something that
+ was a Region (since Region *does* have the necessary properties) you could get it to glow the same.
+
+ Until then, we'll just use a dropshadow effect that any old Node can have. */
 .web-view {
     -fx-effect: dropshadow( gaussian , derive(-fx-text-box-border, -10%) , 2 , 0.9 , 0 , 0 );
 
