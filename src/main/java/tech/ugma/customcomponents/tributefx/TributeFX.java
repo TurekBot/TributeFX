@@ -54,7 +54,15 @@ public class TributeFX {
      */
     private static String promptText = "To mention someone try, \"Hey, @John Sample, can you...\"";
 
-    public static void configureWebView(WebView webView, ArrayList<? extends Mentionable> mentionables) {
+    /**
+     * Default config; to have mentionables added later
+     * TODO: 1/31/2018 Use that one "share documentation" tag
+     */
+    public static void configureWebView(WebView webView) {
+        configureWebView(webView, null, null);
+    }
+
+    protected static void configureWebView(WebView webView, ArrayList<? extends Mentionable> mentionables, URL customConfigURL) {
         WebEngine webEngine = webView.getEngine();
 
         // Load HTML
@@ -64,10 +72,12 @@ public class TributeFX {
         addTributeFiles(webEngine);
 
         //Configure our tribute
-        configureTribute(webEngine);
+        configureTribute(webEngine, customConfigURL);
 
-        //Add mentionables to list
-        addMentionables(mentionables, webEngine);
+        if (mentionables != null) {
+            //Add mentionables to list
+            addMentionables(mentionables, webEngine);
+        }
 
         if (showPromptText) {
             configurePromptText(webEngine);
@@ -75,59 +85,6 @@ public class TributeFX {
 
         mimicBlueGlow(webView);
 
-    }
-
-    private static void addMentionables(ArrayList<? extends Mentionable> mentionables, WebEngine webEngine) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < mentionables.size(); i++) {
-            Mentionable m = mentionables.get(i);
-
-            sb.append(m.toJsString());
-
-            if (i < mentionables.size() - 1) {
-                //If it's not the last one, add a comma
-                sb.append(", ");
-            }
-        }
-        String command = "tribute.append(0, [\n" + sb.toString() + "]);";
-        executeLater(webEngine, command);
-    }
-
-    /**
-     * WebViews are *not* Regions. WebViews are Parents. Regions have the necessary things for a focus glow. Parents, do not.
-     * <p>
-     * So we mimic that behavior here.
-     */
-    private static void mimicBlueGlow(WebView webView) {
-        webView.getStylesheets().add(TributeFX.class.getResource("webView.css").toString());
-    }
-
-    private static void executeLater(WebEngine webEngine, String commands) {
-        //We need to put anything that has to do with the container (like attaching a tribute to it)
-        //in a place that will only be invoked once the container/document is loaded.
-        webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-            Worker.State state = webEngine.getLoadWorker().getState();
-            if (state.equals(Worker.State.SUCCEEDED)) {
-                webEngine.executeScript(commands);
-            }
-        });
-
-    }
-
-    private static void configurePromptText(WebEngine webEngine) {
-        String promptTextConfigurationScript = readFile(promptTextConfiguration);
-
-        final String replace = "PROMPT_TEXT_WILL_BE_REPLACED_HERE";
-        promptTextConfigurationScript = promptTextConfigurationScript.replace(replace, promptText);
-
-        executeLater(webEngine, promptTextConfigurationScript);
-    }
-
-
-    private static void configureTribute(WebEngine webEngine) {
-        String configurationFile = readFile(tributeConfiguration);
-
-        executeLater(webEngine, configurationFile);
     }
 
     private static void addTributeFiles(WebEngine webEngine) {
@@ -186,6 +143,64 @@ public class TributeFX {
 //        });
     }
 
+    private static void configureTribute(WebEngine webEngine, URL customConfigURL) {
+        URL configuration;
+        if (customConfigURL == null) {
+            configuration = tributeConfiguration;
+        } else {
+            configuration = customConfigURL;
+        }
+
+        String configurationFile = readFile(configuration);
+
+        executeLater(webEngine, configurationFile);
+    }
+
+//    /**
+//     * Use this if you're using the <b>default configuration</b>.
+//     * <p>
+//     * This will add your mentionables to the tribute, so that they'll show up when the user types "@"
+//     * <p>
+//     * For custom tribute configurations <small>(where you may have changed/multiple tribute variable names)</small> use {@link TributeFX#addMentionables(ArrayList, WebEngine)}
+//     */
+//    appendMentionables(webEngine, mentionables)
+//
+//    appendMentionables(webEngine, mentionables, tributeVariableName, collectionIndex)
+
+    private static void addMentionables(ArrayList<? extends Mentionable> mentionables, WebEngine webEngine) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < mentionables.size(); i++) {
+            Mentionable m = mentionables.get(i);
+
+            sb.append(m.toJsString());
+
+            if (i < mentionables.size() - 1) {
+                //If it's not the last one, add a comma
+                sb.append(", ");
+            }
+        }
+        String command = "tribute.append(0, [\n" + sb.toString() + "]);";
+        executeLater(webEngine, command);
+    }
+
+    private static void configurePromptText(WebEngine webEngine) {
+        String promptTextConfigurationScript = readFile(promptTextConfiguration);
+
+        final String replace = "PROMPT_TEXT_WILL_BE_REPLACED_HERE";
+        promptTextConfigurationScript = promptTextConfigurationScript.replace(replace, promptText);
+
+        executeLater(webEngine, promptTextConfigurationScript);
+    }
+
+    /**
+     * WebViews are *not* Regions. WebViews are Parents. Regions have the necessary things for a focus glow. Parents, do not.
+     * <p>
+     * So we mimic that behavior here.
+     */
+    private static void mimicBlueGlow(WebView webView) {
+        webView.getStylesheets().add(TributeFX.class.getResource("webView.css").toString());
+    }
+
     private static String readFile(URL file) {
         String fileContents = null;
         try {
@@ -198,6 +213,34 @@ public class TributeFX {
         return fileContents;
     }
 
+    private static void executeLater(WebEngine webEngine, String commands) {
+        //We need to put anything that has to do with the container (like attaching a tribute to it)
+        //in a place that will only be invoked once the container/document is loaded.
+        webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+            Worker.State state = webEngine.getLoadWorker().getState();
+            if (state.equals(Worker.State.SUCCEEDED)) {
+                webEngine.executeScript(commands);
+            }
+        });
+
+    }
+
+    /**
+     * For configuring a webView with the default configuration and adding some mentionables.
+     * TODO: 1/31/2018 Use that one "share documentation" tag
+     */
+    public static void configureWebView(WebView webView, ArrayList<? extends Mentionable> mentionables) {
+        configureWebView(webView, mentionables, null);
+    }
+
+    /**
+     * For configuring a webView with a custom configuration; to have mentionables added later.
+     * TODO: 1/31/2018 Use that one "share documentation" tag
+     */
+    public static void configureWebView(WebView webView, URL customConfigURL) {
+        configureWebView(webView, null, customConfigURL);
+        // TODO: 1/31/2018 Check for unwanted nulls
+    }
 
     public static void turnPromptTextOn() {
         showPromptText = true;
@@ -219,21 +262,21 @@ public class TributeFX {
     /**
      * When using your own configuration keep in mind a few things
      * <ul>
-     *  <li>Configurations are written in JavaScript.</li>
-     *  <li>What the <a href="">default Tribute</a> looks like.</li>
-     *      <ul>
-     *          <li>For full details about all the configuration options, see <a href="">Tribute's Website</a></li>
-     *      </ul>
-     *  <li>If you use a custom {@link Mentionable Mentionable}</li>
-     *      <ul>
-     *          <li>You'll only be able to access elements that you've specified in the {link toJsString()} method. See toJsString()'s documentation to see how easy this is.</li>
-     *      </ul>
-     *  <li>We assume your tribute variable's name is <code>tribute</code>. If you have a different variable name, the append functionality won't work.</li>
-     *  <li>By overriding the default configuration you're responsible for "attaching" the tribute to the right element. Stick with <code>tribute.attach(document.getElementsById('tributable-container'));</code></li>
+     * <li>Configurations are written in JavaScript.</li>
+     * <li>What the <a href="">default Tribute</a> looks like.</li>
+     * <ul>
+     * <li>For full details about all the configuration options, see <a href="">Tribute's Website</a></li>
+     * </ul>
+     * <li>If you use a custom {@link Mentionable Mentionable}</li>
+     * <ul>
+     * <li>You'll only be able to access elements that you've specified in the {link toJsString()} method. See toJsString()'s documentation to see how easy this is.</li>
+     * </ul>
+     * <li>We assume your tribute variable's name is <code>tribute</code>. If you have a different variable name, the append functionality won't work.</li>
+     * <li>By overriding the default configuration you're responsible for "attaching" the tribute to the right element. Stick with <code>tribute.attach(document.getElementsById('tributable-container'));</code></li>
      * </ul>
      *
      * @param tributeConfiguration a URL to your JavaScript configuration file (I'd get it with something like <code>YourClass.class.getResource("customConfiguration.js");</code>.)
-     *                            <p>Here's some <a href="https://stackoverflow.com/a/3862115/5432315">advice for getting resources.</a>
+     *                             <p>Here's some <a href="https://stackoverflow.com/a/3862115/5432315">advice for getting resources.</a>
      */
     public static void setTributeConfiguration(URL tributeConfiguration) {
         TributeFX.tributeConfiguration = tributeConfiguration;
@@ -246,6 +289,7 @@ public class TributeFX {
      * However, if you want to change how the text that gets left behind when you make a mention looks:
      * try configuring the <code>selectTemplate</code> to leave behind a span with a custom id and then style that id.
      * See {@link TributeFX#setTributeConfiguration(java.net.URL)}
+     *
      * @return
      */
     public static URL getTributeLibraryStylesheet() {
@@ -308,21 +352,6 @@ public class TributeFX {
      */
     public interface Mentionable {
         /**
-         * By default this is the thing to lookup. The value that is looked up can be configured by changing
-         * the value of `lookup` in the Tribute's configuration; see <a href="https://github.com/zurb/tribute#a-collection">https://github.com/zurb/tribute#a-collection</a>
-         * Change the configuration using {@link TributeFX#setTributeConfiguration(java.net.URL)}
-         */
-        String getKey();
-
-        /**
-         * By default this is the thing that will get left behind after the mention is made.
-         * HOWEVER, for more involved things, like when you want to include identifying markup,
-         * like, <span contenteditable="false" id="mention" email="username@example.com">John Sample</span>,
-         * configure the `selectTemplate` function; see https://github.com/zurb/tribute#a-collection
-         */
-        String getValue();
-
-        /**
          * This should return your object as a JavaScript String.
          * You should override this method if you want to expose any extra attributes besides key and value.
          * <p>
@@ -337,5 +366,20 @@ public class TributeFX {
         default String toJsString() {
             return "{key: '" + getKey() + "', value: '" + getValue() + "'}";
         }
+
+        /**
+         * By default this is the thing to lookup. The value that is looked up can be configured by changing
+         * the value of `lookup` in the Tribute's configuration; see <a href="https://github.com/zurb/tribute#a-collection">https://github.com/zurb/tribute#a-collection</a>
+         * Change the configuration using {@link TributeFX#setTributeConfiguration(java.net.URL)}
+         */
+        String getKey();
+
+        /**
+         * By default this is the thing that will get left behind after the mention is made.
+         * HOWEVER, for more involved things, like when you want to include identifying markup,
+         * like, <span contenteditable="false" id="mention" email="username@example.com">John Sample</span>,
+         * configure the `selectTemplate` function; see https://github.com/zurb/tribute#a-collection
+         */
+        String getValue();
     }
 }

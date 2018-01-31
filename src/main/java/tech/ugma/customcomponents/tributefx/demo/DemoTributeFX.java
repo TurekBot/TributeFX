@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class DemoTributeFX extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        WebView textArea = new WebView();
+        WebView webView = new WebView();
 
         TributeFX.turnPromptTextOn();
 
@@ -27,18 +27,19 @@ public class DemoTributeFX extends Application {
 
         //Change configuration
         URL demoConfig = DemoTributeFX.class.getResource("demoTributeConfiguration.js");
-        TributeFX.setTributeConfiguration(demoConfig);
+//        TributeFX.setTributeConfiguration(demoConfig);
 
+        //Give custom style
 //        TributeFX.setWebViewInternalStyleSheet(textArea, customStyleSheet);
 
-        TributeFX.configureWebView(textArea, mentionables);
+        TributeFX.configureWebView(webView, demoConfig);
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(20));
         Label comment = new Label("Comment");
         Button submitButton = new Button("Submit");
         TextArea realTextArea = new TextArea();
-        vBox.getChildren().addAll(comment, textArea, submitButton, realTextArea);
+        vBox.getChildren().addAll(comment, webView, submitButton, realTextArea);
         BorderPane root = new BorderPane(vBox);
         Scene theScene = new Scene(root);
 
