@@ -5,10 +5,11 @@
 
 .mention {
     color: gray;
+    font-weight: bold;
 }
 
 .hashtag {
-    color: red;
+    font-weight: bold;
 }
 
 

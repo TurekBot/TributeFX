@@ -1,4 +1,4 @@
-package tech.ugma.customcomponents.tributefx;
+package tech.ugma.customcomponents.tributefx.demo;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -10,8 +10,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import tech.ugma.customcomponents.tributefx.TributeFX;
 import tech.ugma.customcomponents.tributefx.TributeFX.Mentionable;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 public class DemoTributeFX extends Application {
@@ -22,6 +24,10 @@ public class DemoTributeFX extends Application {
         TributeFX.turnPromptTextOn();
 
         ArrayList<Person> mentionables = createList();
+
+        //Change configuration
+        URL demoConfig = DemoTributeFX.class.getResource("demoTributeConfiguration.js");
+        TributeFX.setTributeConfiguration(demoConfig);
 
         TributeFX.configureWebView(textArea, mentionables);
 
@@ -49,6 +55,8 @@ public class DemoTributeFX extends Application {
         mentionables.add(new Person("John", "Sample", "John.Sample@gmail.com"));
         return mentionables;
     }
+
+
 
     public class Person implements Mentionable {
         String firstName;

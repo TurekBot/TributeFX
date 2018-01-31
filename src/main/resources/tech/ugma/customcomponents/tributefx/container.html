@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
-    <head></head>
-    <!-- We set the body's contenteditable to false so that the user
-         doesn't delete any of the configuration that gets put in the body.-->
-    <body>
+    <head>
+        <link rel="stylesheet" href="tribute-js/tribute.css"/>
         <link rel="stylesheet" href="container.css"/>
+        <!--To customize the look and feel, add your stylesheet using `webView.getEngine().setUserStyleSheetLocation(styleSheetURL);`-->
+    </head>
+    <body>
         <!-- This is the only thing the user can edit -->
         <div contenteditable="true" id="tributable-container"></div>
     </body>

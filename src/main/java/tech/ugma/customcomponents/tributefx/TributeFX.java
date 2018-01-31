@@ -104,9 +104,58 @@ public class TributeFX {
 
     private static void addTributeFiles(WebEngine webEngine) {
         webEngine.executeScript(readFile(tributeLibrary));
-        // FIXME: 1/30/2018 This will break something if someone else tries to set the userStyleSheet after/before us
-        //Add Tribute Stylesheet
-        webEngine.setUserStyleSheetLocation(tributeLibraryStylesheet.toExternalForm());
+        /*The tribute stylesheet is loaded *in* the default HTML container.*/
+
+        // TODO: 1/31/2018 support using user HTML (the problem with this is how right now we're using relative css file references, you know, `<link rel="stylesheet" href="tribute-js/tribute.css"/>`, and changing the document's location or even loading it from memory causes the document's baseURI to change and that breaks the relative references to the CSS files)
+//        //If the document's base URI is not within the TributeFX package, then add the CSS inline.
+//        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+//                if (newValue.equals(Worker.State.SUCCEEDED)) {
+//                    try {
+//                        //Let's check if we're dealing with our default HTML container (the one we made)
+//                        if (!new URI(webEngine.getDocument().getDocumentURI()).toURL().sameFile(container)) {
+//                            System.out.println("The default HTML is not being used... oh boy.");
+//
+//
+//                            String baseURIString = webEngine.getDocument().getBaseURI();
+//                            if (baseURIString != null) {
+//
+//                                //Now let's check if it's where it should be in order to access the relatively referenced css files
+//                                URI baseURI = new URI(baseURIString);
+//                                if (Paths.get(baseURI))
+//                                    TributeFX.class.get
+//
+//                            } else {
+//                                //If the URI is null it means that the HTML was loaded from a string.
+//                                //This means that no relative references will work within the HTML.
+//                                //Our best bet, as far as I can tell, is to now extract out all the CSS from our files and put it in
+//                                //the document's <head>
+//
+//                            }
+//
+////            if ()
+//
+////        //Add Tribute Stylesheet if the HTML has been changed
+////        if (!tributeLibraryStylesheet.sameFile(TributeFX.class.getResource("tribute-js/tribute.css"))) {
+////            Document document = webEngine.getDocument();
+////            Element link = document.createElement("link");
+////            link.setAttribute("rel", "stylesheet");
+////            link.setAttribute("href", "tribute-js/tribute.css");
+////
+////            document.getElementsByTagName("head").item(0).appendChild(link);
+////        }
+//                        } else {
+//                            System.out.println("The default HTML is not being used... oh boy.");
+//                        }
+//                    } catch (URISyntaxException e) {
+//                        e.printStackTrace();
+//                    } catch (MalformedURLException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
     }
 
     private static String readFile(URL file) {
