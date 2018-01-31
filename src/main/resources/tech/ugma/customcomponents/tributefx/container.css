@@ -6,23 +6,29 @@
   color: red;
 }
 
-/*We have to make the body and the container both 100%, so that you can click any
-where in the body and get a cursor.*/
-body {
-  width: 100%;
-  height: 100vh;
-  margin: 0px;
 
-  outline: 2px red;
-  font-family: Lucida Bright;
+html, body {
+  /*This makes the tributable container take up the whole area of the WebView*/
+  width: 100%;
+  height: 100%;
+  margin: 0px auto;
+
+  /*This is the same font that JavaFX uses*/
+  font-family: System;
   font-size: 12px;
-  font-weight: regular;
+  font-weight: Regular;
 }
 
 #tributable-container {
-  position: relative;
-  height: 100%;
-  width: 100%;
+    /*This makes the tributable container take up the whole area of the WebView*/
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    /*This puts the text the same distance away from the border as with a regular TextArea (see Modena.css)*/
+    padding: 0.25em 0.583em 0.25em 0.583em;
 }
 
 #prompt-text {

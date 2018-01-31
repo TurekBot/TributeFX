@@ -1,0 +1,8 @@
+.web-view {
+    -fx-effect: dropshadow( gaussian , derive(-fx-text-box-border, -10%) , 2 , 0.9 , 0 , 0 );
+
+}
+
+.web-view:focused {
+    -fx-effect: dropshadow( gaussian , -fx-focus-color , 7 , 0.3 , 0 , 0 )
+}

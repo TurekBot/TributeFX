@@ -1,6 +1,7 @@
 package tech.ugma.customcomponents.tributefx;
 
 import javafx.concurrent.Worker;
+import javafx.scene.text.Font;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -42,6 +43,21 @@ public class TributeFX {
             configurePromptText(webEngine);
         }
 
+
+        mimicBlueGlow(toConfigure);
+
+        System.out.println(Font.getDefault());
+
+    }
+
+    /**
+     * WebViews are *not* Regions. WebViews are Parents. Regions have the necessary things for a focus glow. Parents, do not.
+     *
+     * So we mimic that behavior here.
+     * @param webView
+     */
+    private static void mimicBlueGlow(WebView webView) {
+        webView.getStylesheets().add(TributeFX.class.getResource("webView.css").toString());
     }
 
     private static void executeLater(WebEngine webEngine, String commands) {
