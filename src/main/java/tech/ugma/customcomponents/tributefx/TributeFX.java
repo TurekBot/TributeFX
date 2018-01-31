@@ -10,6 +10,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+// TODO: 1/30/2018 Add getters and setters for the configuration files
 public class TributeFX {
 
     private static URL container = TributeFX.class.getResource("container.html");
@@ -19,18 +20,17 @@ public class TributeFX {
 
     private static URL tributeConfiguration = TributeFX.class.getResource("configureTribute.js");
     private static URL tributeLibrary = TributeFX.class.getResource("tribute-js/tribute.js");
-    private static URL tributeStylesheet = TributeFX.class.getResource("tribute-js/tribute.css");
+    private static URL tributeLibraryStylesheet = TributeFX.class.getResource("tribute-js/tribute.css");
 
     private static boolean showPromptText = false;
     private static String promptText = "To mention someone try, \"Hey, @John Sample, can you...\"";
 
-
-    public static void configureWebView(WebView toConfigure) {
-        WebEngine webEngine = toConfigure.getEngine();
+    // TODO: 1/30/2018 Add a list of mentionables; think it through.
+    public static void configureWebView(WebView webView) {
+        WebEngine webEngine = webView.getEngine();
 
         // Load HTML
         webEngine.load(container.toExternalForm());
-
 
         //Add Tribute files
         addTributeFiles(webEngine);
@@ -42,8 +42,7 @@ public class TributeFX {
             configurePromptText(webEngine);
         }
 
-
-        mimicBlueGlow(toConfigure);
+        mimicBlueGlow(webView);
 
     }
 
@@ -51,7 +50,6 @@ public class TributeFX {
      * WebViews are *not* Regions. WebViews are Parents. Regions have the necessary things for a focus glow. Parents, do not.
      *
      * So we mimic that behavior here.
-     * @param webView
      */
     private static void mimicBlueGlow(WebView webView) {
         webView.getStylesheets().add(TributeFX.class.getResource("webView.css").toString());
@@ -89,7 +87,7 @@ public class TributeFX {
         webEngine.executeScript(readFile(tributeLibrary));
         // FIXME: 1/30/2018 This will break something if someone else tries to set the userStyleSheet after/before us
         //Add Tribute Stylesheet
-        webEngine.setUserStyleSheetLocation(tributeStylesheet.toExternalForm());
+        webEngine.setUserStyleSheetLocation(tributeLibraryStylesheet.toExternalForm());
     }
 
     private static String readFile(URL file) {
@@ -114,5 +112,21 @@ public class TributeFX {
     }
     public static void turnPromptTextOff() {
         showPromptText = false;
+    }
+
+    public static URL getTributeConfiguration() {
+        return tributeConfiguration;
+    }
+
+    public static void setTributeConfiguration(URL tributeConfiguration) {
+        TributeFX.tributeConfiguration = tributeConfiguration;
+    }
+
+    public static URL getTributeLibraryStylesheet() {
+        return tributeLibraryStylesheet;
+    }
+
+    public static void setTributeLibraryStylesheet(URL tributeLibraryStylesheet) {
+        TributeFX.tributeLibraryStylesheet = tributeLibraryStylesheet;
     }
 }
