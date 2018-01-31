@@ -1,8 +1,12 @@
 package tech.ugma.customcomponents.tributefx;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -11,9 +15,15 @@ public class DemoTributeFX extends Application {
     public void start(Stage primaryStage) throws Exception {
         WebView textArea = new WebView();
 
+        TributeFX.turnPromptTextOn();
         TributeFX.configureWebView(textArea);
 
-        AnchorPane root = new AnchorPane(textArea);
+        VBox vBox = new VBox(10);
+        vBox.setPadding(new Insets(20));
+        Label comment = new Label("Comment");
+        Button submitButton = new Button("Submit");
+        vBox.getChildren().addAll(comment, textArea, submitButton);
+        BorderPane root = new BorderPane(vBox);
         Scene theScene = new Scene(root);
 
 

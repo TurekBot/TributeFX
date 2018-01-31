@@ -14,11 +14,15 @@ public class TributeFX {
 
     private static URL container = TributeFX.class.getResource("container.html");
     private static URL containerStyleSheet = TributeFX.class.getResource("container.css");
-    private static URL containerConfiguration = TributeFX.class.getResource("configureContainer.js");
+
+    private static URL promptTextConfiguration = TributeFX.class.getResource("configurePromptText.js");
 
     private static URL tributeConfiguration = TributeFX.class.getResource("configureTribute.js");
     private static URL tributeLibrary = TributeFX.class.getResource("tribute-js/tribute.js");
     private static URL tributeStylesheet = TributeFX.class.getResource("tribute-js/tribute.css");
+
+    private static boolean showPromptText = false;
+    private static String promptText = "To mention someone try, \"Hey, @John Sample, can you...\"";
 
 
     public static void configureWebView(WebView toConfigure) {
@@ -34,21 +38,38 @@ public class TributeFX {
         //Configure our tribute
         configureTribute(webEngine);
 
+        if (showPromptText) {
+            configurePromptText(webEngine);
+        }
+
     }
 
-
-    private static void configureTribute(WebEngine webEngine) {
-        final String configurationFile = readFile(tributeConfiguration);
-
+    private static void executeLater(WebEngine webEngine, String commands) {
         //We need to put anything that has to do with the container (like attaching a tribute to it)
         //in a place that will only be invoked once the container/document is loaded.
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
             Worker.State state = webEngine.getLoadWorker().getState();
             if (state.equals(Worker.State.SUCCEEDED)) {
-                webEngine.executeScript(configurationFile);
+                webEngine.executeScript(commands);
             }
         });
 
+    }
+
+    private static void configurePromptText(WebEngine webEngine) {
+        String promptTextConfigurationScript = readFile(promptTextConfiguration);
+
+        final String replace = "PROMPT_TEXT_WILL_BE_REPLACED_HERE";
+        promptTextConfigurationScript = promptTextConfigurationScript.replace(replace, promptText);
+
+        executeLater(webEngine, promptTextConfigurationScript);
+    }
+
+
+    private static void configureTribute(WebEngine webEngine) {
+        String configurationFile = readFile(tributeConfiguration);
+
+        executeLater(webEngine, configurationFile);
     }
 
     private static void addTributeFiles(WebEngine webEngine) {
@@ -68,5 +89,17 @@ public class TributeFX {
             e.printStackTrace();
         }
         return fileContents;
+    }
+
+
+    public static void turnPromptTextOn() {
+        showPromptText = true;
+    }
+    public static void turnPromptTextOn(String promptText) {
+        showPromptText = true;
+        TributeFX.promptText = promptText;
+    }
+    public static void turnPromptTextOff() {
+        showPromptText = false;
     }
 }
