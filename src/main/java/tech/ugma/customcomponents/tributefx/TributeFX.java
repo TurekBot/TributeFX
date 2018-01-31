@@ -1,7 +1,6 @@
 package tech.ugma.customcomponents.tributefx;
 
 import javafx.concurrent.Worker;
-import javafx.scene.text.Font;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -45,8 +44,6 @@ public class TributeFX {
 
 
         mimicBlueGlow(toConfigure);
-
-        System.out.println(Font.getDefault());
 
     }
 

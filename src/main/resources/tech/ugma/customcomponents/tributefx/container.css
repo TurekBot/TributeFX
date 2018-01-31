@@ -1,6 +1,6 @@
 /*
-Any changes made here take place *WITHIN* the html of the WebView.
-See webView.css to style the webView within the JavaFX scene graph.
+ Any changes made here take place *WITHIN* the html of the WebView.
+ See webView.css to style the webView within the JavaFX scene graph.
 */
 
 .mention {
@@ -8,20 +8,20 @@ See webView.css to style the webView within the JavaFX scene graph.
 }
 
 .hashtag {
-  color: red;
+    color: red;
 }
 
 
 html, body {
-  /*This makes the tributable container take up the whole area of the WebView*/
-  width: 100%;
-  height: 100%;
-  margin: 0px auto;
+    /*This makes the tributable container take up the whole area of the WebView*/
+    width: 100%;
+    height: 100%;
+    margin: 0px auto;
 
-  /*This is the same font that JavaFX uses*/
-  font-family: System;
-  font-size: 12px;
-  font-weight: Regular;
+    /*This is the same font that JavaFX uses*/
+    font-family: System;
+    font-size: 12px;
+    font-weight: Regular;
 }
 
 #tributable-container {
@@ -37,8 +37,8 @@ html, body {
 }
 
 #prompt-text {
-  color: grey;
-  /*opacity: .5;*/
-  /*position: absolute;*/
-  /*bottom: 20%;*/
+    color: grey;
+    /*opacity: .5;*/
+    /*position: absolute;*/
+    /*bottom: 20%;*/
 }
