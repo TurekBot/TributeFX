@@ -10,6 +10,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import tech.ugma.customcomponents.tributefx.TributeFX.Mentionable;
+
+import java.util.ArrayList;
 
 public class DemoTributeFX extends Application {
     @Override
@@ -17,7 +20,10 @@ public class DemoTributeFX extends Application {
         WebView textArea = new WebView();
 
         TributeFX.turnPromptTextOn();
-        TributeFX.configureWebView(textArea);
+
+        ArrayList<Person> mentionables = createList();
+
+        TributeFX.configureWebView(textArea, mentionables);
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(20));
@@ -33,4 +39,38 @@ public class DemoTributeFX extends Application {
         primaryStage.setScene(theScene);
         primaryStage.show();
     }
+
+    private ArrayList<Person> createList() {
+        ArrayList<Person> mentionables = new ArrayList<>();
+        mentionables.add(new Person("Brad", "Turek", "UgmaDevelopment@gmail.com"));
+        mentionables.add(new Person("Rick", "Turek", "Rick.Turek@sundance.net"));
+        mentionables.add(new Person("Greg", "Gabbitas", "Greg.Gabbitas@sundance.net"));
+        mentionables.add(new Person("Deborah", "Kaiser", "Deborah.Kaiser@sundance.net"));
+        mentionables.add(new Person("John", "Sample", "John.Sample@gmail.com"));
+        return mentionables;
+    }
+
+    public class Person implements Mentionable {
+        String firstName;
+        String lastName;
+        String email;
+
+        public Person(String firstName, String lastName, String email) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.email = email;
+        }
+
+        @Override
+        public String getKey() {
+            return firstName + " " + lastName;
+        }
+
+        @Override
+        public String getValue() {
+            return email;
+        }
+    }
+
+
 }
