@@ -1,59 +1,72 @@
 package tech.ugma.customcomponents.tributefx;
 
+import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class TributeFX {
 
-    private static String defaultHtml =
-            "<!DOCTYPE html>\n" +
-                    "<html>\n" +
-                    "  <head>\n" +
-                    "  <base/>" +
-                    "  </head>\n" +
-                    "  <!-- We set the body's contenteditable to false so that the user\n" +
-                    "       doesn't delete any of the configuration that gets put in the body.-->\n" +
-                    "  <body contenteditable=\"false\">\n" +
-                    "    <!-- This is the only thing the user can edit -->\n" +
-                    "    <div contenteditable=\"true\" id=\"container\"></div>\n" +
-                    "\n" +
-                    "    <link rel=\"stylesheet\" href=\"tribute-js/tribute.css\" />\n" +
-                    "    <script src=\"tribute-js/tribute.js\"></script>\n" +
-                    "\n" +
-                    "    <link rel=\"stylesheet\" href=\"container.css\" />\n" +
-                    "    <script src=\"configureTribute.js\"></script>\n" +
-                    "    <script src=\"configureContainer.js\"></script>\n" +
-                    "\n" +
-                    "\n" +
-                    "  </body>\n" +
-                    "</html>";
+    private static URL container = TributeFX.class.getResource("container.html");
+    private static URL containerStyleSheet = TributeFX.class.getResource("container.css");
+    private static URL containerConfiguration = TributeFX.class.getResource("configureContainer.js");
 
-    private String defaultTributeConfiguration = "";
+    private static URL tributeConfiguration = TributeFX.class.getResource("configureTribute.js");
+    private static URL tributeLibrary = TributeFX.class.getResource("tribute-js/tribute.js");
+    private static URL tributeStylesheet = TributeFX.class.getResource("tribute-js/tribute.css");
 
-
-    public void setTributeConfiguration(String configuration) {
-
-    }
-
-    public String getTributeConfiguration() {
-        return null;
-    }
 
     public static void configureWebView(WebView toConfigure) {
         WebEngine webEngine = toConfigure.getEngine();
 
-        URL url = TributeFX.class.getResource("configureTribute.js");
+        // Load HTML
+        webEngine.load(container.toExternalForm());
 
-        String baseUrl = url.toExternalForm().substring(0, url.toExternalForm().lastIndexOf("/") + 1);
 
-        System.out.println(url.toExternalForm());
-        System.out.println(baseUrl);
+        //Add Tribute files
+        addTributeFiles(webEngine);
 
-        defaultHtml = defaultHtml.replace("<base/>", "<base href=\"" + baseUrl + "\"/>");
+        //Configure our tribute
+        configureTribute(webEngine);
 
-        webEngine.loadContent(defaultHtml);
+    }
 
+
+    private static void configureTribute(WebEngine webEngine) {
+        final String configurationFile = readFile(tributeConfiguration);
+
+        //We need to put anything that has to do with the container (like attaching a tribute to it)
+        //in a place that will only be invoked once the container/document is loaded.
+        webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+            Worker.State state = webEngine.getLoadWorker().getState();
+            if (state.equals(Worker.State.SUCCEEDED)) {
+                webEngine.executeScript(configurationFile);
+            }
+        });
+
+    }
+
+    private static void addTributeFiles(WebEngine webEngine) {
+        webEngine.executeScript(readFile(tributeLibrary));
+        // FIXME: 1/30/2018 This will break something if someone else tries to set the userStyleSheet after/before us
+        //Add Tribute Stylesheet
+        webEngine.setUserStyleSheetLocation(tributeStylesheet.toExternalForm());
+    }
+
+    private static String readFile(URL file) {
+        String fileContents = null;
+        try {
+            fileContents = new String(Files.readAllBytes(Paths.get(file.toURI())));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return fileContents;
     }
 }

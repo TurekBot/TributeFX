@@ -2,7 +2,7 @@
 var PROMPT_TEXT = 'To mention someone try, "Hey, @John Sample, can you..."'
 
 //Get the container for later use
-var container = document.getElementById('container');
+var container = document.getElementById('tributable-container');
 
 //Removes the prompt text from the container
 function removePromptText() {

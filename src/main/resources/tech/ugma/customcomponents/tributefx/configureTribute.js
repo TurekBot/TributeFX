@@ -114,4 +114,4 @@ var tributeMultipleTriggers = new Tribute({
 });
 
 //Attach the tribute object to an element in the html
-      tributeMultipleTriggers.attach(document.getElementById('container'));
+      tributeMultipleTriggers.attach(document.getElementById('tributable-container'));
