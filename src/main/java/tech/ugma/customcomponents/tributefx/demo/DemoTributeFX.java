@@ -29,6 +29,8 @@ public class DemoTributeFX extends Application {
         URL demoConfig = DemoTributeFX.class.getResource("demoTributeConfiguration.js");
         TributeFX.setTributeConfiguration(demoConfig);
 
+//        TributeFX.setWebViewInternalStyleSheet(textArea, customStyleSheet);
+
         TributeFX.configureWebView(textArea, mentionables);
 
         VBox vBox = new VBox(10);

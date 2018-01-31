@@ -14,16 +14,44 @@ import java.util.ArrayList;
 // TODO: 1/30/2018 Add getters and setters for the configuration files
 public class TributeFX {
 
+    /**
+     * For now we have to use this HTML document because of we're using relative references to the CSS files.
+     */
     private static URL container = TributeFX.class.getResource("container.html");
+    /**
+     * This styles the actual HTML inside the WebView. It makes the editable part take up the whole WebView
+     */
     private static URL containerStyleSheet = TributeFX.class.getResource("container.css");
 
+    /**
+     * Configures some prompt text that disappears when the user clicks focuses the WebView.
+     * <p>
+     * Change the text using {@link TributeFX#turnPromptTextOn(java.lang.String)}.
+     */
     private static URL promptTextConfiguration = TributeFX.class.getResource("configurePromptText.js");
 
+    /**
+     * The default configuration for the Tribute. You can use your own with {@link TributeFX#setTributeConfiguration(URL)}.
+     */
     private static URL tributeConfiguration = TributeFX.class.getResource("configureTribute.js");
+
+    /**
+     * The actual Tribute Library. Version 3.1.3. See <a href="https://github.com/zurb/tribute/releases">Tribute's Website</a>
+     */
     private static URL tributeLibrary = TributeFX.class.getResource("tribute-js/tribute.js");
+    /**
+     * Tribute's stylesheet. Used internally by Tribute.
+     */
     private static URL tributeLibraryStylesheet = TributeFX.class.getResource("tribute-js/tribute.css");
 
-    private static boolean showPromptText = false;
+    /**
+     *
+     */
+    private static boolean showPromptText = true;
+
+    /**
+     * The text that is shown while the WebView is not in focus. Edit it with {@link TributeFX#turnPromptTextOn(String)}.
+     */
     private static String promptText = "To mention someone try, \"Hey, @John Sample, can you...\"";
 
     public static void configureWebView(WebView webView, ArrayList<? extends Mentionable> mentionables) {
@@ -188,16 +216,54 @@ public class TributeFX {
         return tributeConfiguration;
     }
 
+    /**
+     * When using your own configuration keep in mind a few things
+     * <ul>
+     *  <li>Configurations are written in JavaScript.</li>
+     *  <li>What the <a href="">default Tribute</a> looks like.</li>
+     *      <ul>
+     *          <li>For full details about all the configuration options, see <a href="">Tribute's Website</a></li>
+     *      </ul>
+     *  <li>If you use a custom {@link Mentionable Mentionable}</li>
+     *      <ul>
+     *          <li>You'll only be able to access elements that you've specified in the {link toJsString()} method. See toJsString()'s documentation to see how easy this is.</li>
+     *      </ul>
+     *  <li>We assume your tribute variable's name is <code>tribute</code>. If you have a different variable name, the append functionality won't work.</li>
+     *  <li>By overriding the default configuration you're responsible for "attaching" the tribute to the right element. Stick with <code>tribute.attach(document.getElementsById('tributable-container'));</code></li>
+     * </ul>
+     *
+     * @param tributeConfiguration a URL to your JavaScript configuration file (I'd get it with something like <code>YourClass.class.getResource("customConfiguration.js");</code>.)
+     *                            <p>Here's some <a href="https://stackoverflow.com/a/3862115/5432315">advice for getting resources.</a>
+     */
     public static void setTributeConfiguration(URL tributeConfiguration) {
         TributeFX.tributeConfiguration = tributeConfiguration;
     }
 
+    /**
+     * If you need to change how the tribute's menu 'n things look, try adding to this file (or better yet, just make any changes
+     * to the appropriate classes in your own stylesheet.).
+     * <p>
+     * However, if you want to change how the text that gets left behind when you make a mention looks:
+     * try configuring the <code>selectTemplate</code> to leave behind a span with a custom id and then style that id.
+     * See {@link TributeFX#setTributeConfiguration(java.net.URL)}
+     * @return
+     */
     public static URL getTributeLibraryStylesheet() {
         return tributeLibraryStylesheet;
     }
 
-    public static void setTributeLibraryStylesheet(URL tributeLibraryStylesheet) {
-        TributeFX.tributeLibraryStylesheet = tributeLibraryStylesheet;
+    /**
+     * This sets the styles <i>within</i> the WebView.
+     * <p>
+     * To customize how the mentions look, you'll need to configure the <code>selectTemplate</code> <small>(using
+     * {@link TributeFX#setTributeConfiguration(URL)})</small> to leave behind something like
+     * {@code <span class="mention">@jSample</span>}, and then style the <code>.mention</code> class in your stylesheet.
+     * <p>
+     * If you really feel like it, you can style the <code>tributable-container</code> <small>(but be
+     * careful because if you change its size it might get ugly.)</small>
+     */
+    public static void setWebViewInternalStyleSheet(WebView webView, URL customStyleSheetURL) {
+        webView.getEngine().setUserStyleSheetLocation(customStyleSheetURL.toString());
     }
 
     /**
