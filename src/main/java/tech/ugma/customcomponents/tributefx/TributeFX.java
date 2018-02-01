@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+@SuppressWarnings("WeakerAccess")
 public class TributeFX {
 
     /**
@@ -332,8 +333,6 @@ public class TributeFX {
      * However, if you want to change how the text that gets left behind when you make a mention looks:
      * try configuring the <code>selectTemplate</code> to leave behind a span with a custom id and then style that id.
      * See {@link TributeFX#tributifyWebView(WebView, URL)}
-     *
-     * @return
      */
     public static URL getTributeLibraryStylesheet() {
         return tributeLibraryStylesheet;
@@ -348,9 +347,9 @@ public class TributeFX {
      * <p>
      * <u>If your applied style doesn't work</u>, try two things:
      * <ul>
-     *     <li>Make sure you're getting your stylesheet right</li>
-     *     <li>Try <a href="https://stackoverflow.com/a/31370047/5432315">adding "!important"</a> after your style—this
-     *     will override any other style before you.</li>
+     * <li>Make sure you're getting your stylesheet right</li>
+     * <li>Try <a href="https://stackoverflow.com/a/31370047/5432315">adding "!important"</a> after your style—this
+     * will override any other style before you.</li>
      * </ul>
      * <p>
      * If you really feel like it, you can style the <code>tributable-container</code> <small>(but be
