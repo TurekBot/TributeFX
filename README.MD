@@ -1,6 +1,12 @@
 # TributeFX
 
-An <span title="meaning until a better, native, one is made for JavaFX"><small><small>in-the-mean-time</small></small></span> @mention library for JavaFX. A JavaFX wrapper for [Tribute.js][Tribute]
+A `@mention` engine for JavaFX.
+
+####Motivation
+I looked high and low for a JavaFX `@mention` engine—no luck. 
+
+I welcome the day that there *is* one, but until
+then, here's a wrapper for the JavaScript, Native `@mention` engine, [Tribute.js][Tribute].
 
 ## Getting Started
 * Coming Soon: Maven Central
@@ -31,7 +37,7 @@ If you're keeping it simple, use, [`SimpleMentionable`]
 
 To pass in more attributes, like an email, see [`Mentionable`]'s Documentation.
 
-### Customization
+### [Customization][get custom with it]
 Once you've cut your teeth on the basics, you can whip out some JavaScript and [get custom with it]:
 
     URL customConfig = DemoWithCustomConfig.class.getResource("customTributeConfiguration.js");
@@ -47,7 +53,7 @@ See [DemoWithCustomConfig] to really get jiggy with it.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository]
 
 ## Authors
 
@@ -63,11 +69,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [Tribute]: https://github.com/zurb/tribute
 [Hunger Games Demo]: https://i.imgur.com/yLadZRo.gif
 [DemoWithDefaults]: src/main/java/tech/ugma/customcomponents/tributefx/demo/DemoWithDefaults.java
-
-[Tribute]: https://github.com/zurb/tribute
-[Hunger Games Demo]: https://i.imgur.com/yLadZRo.gif
-[DemoWithDefaults]: src/main/java/tech/ugma/customcomponents/tributefx/demo/DemoWithDefaults.java
 [get custom with it]: https://github.com/zurb/tribute#a-collection "See Tribute's website for all the configuration options."
 [DemoWithCustomConfig]: src/main/java/tech/ugma/customcomponents/tributefx/demo/DemoWithCustomConfig.java
 [`Mentionable`]: src/main/java/tech/ugma/customcomponents/tributefx/Mentionable.java
 [`SimpleMentionable`]: src/main/java/tech/ugma/customcomponents/tributefx/SimpleMentionable.java
+[tags on this repository]: https://github.com/TurekBot/TributeFX/tags
