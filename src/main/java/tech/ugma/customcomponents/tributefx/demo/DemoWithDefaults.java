@@ -6,6 +6,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import tech.ugma.customcomponents.tributefx.SimpleMentionable;
 import tech.ugma.customcomponents.tributefx.TributeFX;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class DemoWithDefaults extends Application {
         TributeFX.tributifyWebView(webView);
 
         WebEngine webEngine = webView.getEngine();
-        ArrayList<TributeFX.SimpleMentionable> mentionables = TributeFX.createSampleMentionableList();
+        ArrayList<SimpleMentionable> mentionables = TributeFX.createSampleMentionableList();
         TributeFX.addMentionables(mentionables, webEngine);
 
         primaryStage.setScene(scene);

@@ -29,7 +29,7 @@ If you're keeping it simple, use, [`SimpleMentionable`]
     
     TributeFX.addMentionables(webView, mentionables);
 
-For more complicated Mentionables, see `Mentionable`'s Documentation.
+To pass in more attributes, like an email, see [`Mentionable`]'s Documentation.
 
 ### Customization
 Once you've cut your teeth on the basics, you can whip out some JavaScript and [get custom with it]:
@@ -69,4 +69,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [DemoWithDefaults]: src/main/java/tech/ugma/customcomponents/tributefx/demo/DemoWithDefaults.java
 [get custom with it]: https://github.com/zurb/tribute#a-collection "See Tribute's website for all the configuration options."
 [DemoWithCustomConfig]: src/main/java/tech/ugma/customcomponents/tributefx/demo/DemoWithCustomConfig.java
-[`SimpleMentionable`]: about:blank
+[`Mentionable`]: src/main/java/tech/ugma/customcomponents/tributefx/Mentionable.java
+[`SimpleMentionable`]: src/main/java/tech/ugma/customcomponents/tributefx/SimpleMentionable.java

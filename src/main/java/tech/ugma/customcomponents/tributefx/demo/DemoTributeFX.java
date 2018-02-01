@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import tech.ugma.customcomponents.tributefx.TributeFX;
-import tech.ugma.customcomponents.tributefx.TributeFX.Mentionable;
+import tech.ugma.customcomponents.tributefx.Mentionable;
 
 import java.net.URL;
 import java.util.ArrayList;
