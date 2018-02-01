@@ -1,8 +1,12 @@
 var tribute = new Tribute({
-  values: [],
-  fillAttr: 'key',
-  replaceTextSuffix: '',
-  allowSpaces: true
+    values: [],
+    selectTemplate: function(person) {
+        return '<span contenteditable="false" class="mention" key="' + person.original.key +
+        '" title="' + person.original.key + '">' + this.current.collection.trigger
+        + person.original[this.current.collection.fillAttr] + '</span>'
+      },
+    allowSpaces: true,
+    replaceTextSuffix: ''
 });
 
 tribute.attach(document.getElementById('tributable-container'));
