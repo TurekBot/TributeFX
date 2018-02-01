@@ -454,7 +454,7 @@ public class TributeFX {
     }
 
 
-    public class SimpleMentionable implements Mentionable {
+    public static class SimpleMentionable implements Mentionable {
         private String key;
         private String value;
 
@@ -483,6 +483,167 @@ public class TributeFX {
         public String getValue() {
             return value;
         }
+    }
+
+    /**
+     * Names courtesy of http://listofrandomnames.com
+     * @return a sample list of mentionables to test with
+     */
+    public static ArrayList<SimpleMentionable> createSampleMentionableList() {
+        ArrayList<SimpleMentionable> mentionables = new ArrayList<>();
+
+        mentionables.add(new SimpleMentionable("Edie Warshaw", "Edie Warshaw"));
+        mentionables.add(new SimpleMentionable("Dorine Scaife", "Dorine Scaife"));
+        mentionables.add(new SimpleMentionable("Doreatha Houchens", "Doreatha Houchens"));
+        mentionables.add(new SimpleMentionable("Warner Buttrey", "Warner Buttrey"));
+        mentionables.add(new SimpleMentionable("Frida Bladen", "Frida Bladen"));
+        mentionables.add(new SimpleMentionable("Heriberto Myerson", "Heriberto Myerson"));
+        mentionables.add(new SimpleMentionable("Jeri Otte", "Jeri Otte"));
+        mentionables.add(new SimpleMentionable("Abe Eno", "Abe Eno"));
+        mentionables.add(new SimpleMentionable("Emmanuel Bryner", "Emmanuel Bryner"));
+        mentionables.add(new SimpleMentionable("Cami Mclester", "Cami Mclester"));
+        mentionables.add(new SimpleMentionable("Latoria Childress", "Latoria Childress"));
+        mentionables.add(new SimpleMentionable("Shanti Willoughby", "Shanti Willoughby"));
+        mentionables.add(new SimpleMentionable("Neal Raisor", "Neal Raisor"));
+        mentionables.add(new SimpleMentionable("Hailey Lagrone", "Hailey Lagrone"));
+        mentionables.add(new SimpleMentionable("Roselia Bostwick", "Roselia Bostwick"));
+        mentionables.add(new SimpleMentionable("Yu Roof", "Yu Roof"));
+        mentionables.add(new SimpleMentionable("Adelia Goings", "Adelia Goings"));
+        mentionables.add(new SimpleMentionable("Georgeann Derosia", "Georgeann Derosia"));
+        mentionables.add(new SimpleMentionable("Norma Taranto", "Norma Taranto"));
+        mentionables.add(new SimpleMentionable("Clinton Rehder", "Clinton Rehder"));
+        mentionables.add(new SimpleMentionable("Minda Tyus", "Minda Tyus"));
+        mentionables.add(new SimpleMentionable("Jamie Frasier", "Jamie Frasier"));
+        mentionables.add(new SimpleMentionable("Maricela Mohammad", "Maricela Mohammad"));
+        mentionables.add(new SimpleMentionable("Iesha Fausto", "Iesha Fausto"));
+        mentionables.add(new SimpleMentionable("Shu Mickle", "Shu Mickle"));
+        mentionables.add(new SimpleMentionable("Darell Delgiudice", "Darell Delgiudice"));
+        mentionables.add(new SimpleMentionable("Chi Kitt", "Chi Kitt"));
+        mentionables.add(new SimpleMentionable("Billie Eldridge", "Billie Eldridge"));
+        mentionables.add(new SimpleMentionable("Rikki Landaverde", "Rikki Landaverde"));
+        mentionables.add(new SimpleMentionable("Ivory Gasaway", "Ivory Gasaway"));
+        mentionables.add(new SimpleMentionable("Dara Sobol", "Dara Sobol"));
+        mentionables.add(new SimpleMentionable("Charleen Raub", "Charleen Raub"));
+        mentionables.add(new SimpleMentionable("Cathie Leffel", "Cathie Leffel"));
+        mentionables.add(new SimpleMentionable("Pamula Pizano", "Pamula Pizano"));
+        mentionables.add(new SimpleMentionable("Edda Choice", "Edda Choice"));
+        mentionables.add(new SimpleMentionable("Laverna Mares", "Laverna Mares"));
+        mentionables.add(new SimpleMentionable("Gregoria Nyberg", "Gregoria Nyberg"));
+        mentionables.add(new SimpleMentionable("Bette Bolton", "Bette Bolton"));
+        mentionables.add(new SimpleMentionable("Evonne Uhrich", "Evonne Uhrich"));
+        mentionables.add(new SimpleMentionable("Viola Humbertson", "Viola Humbertson"));
+        mentionables.add(new SimpleMentionable("Elbert Lynd", "Elbert Lynd"));
+        mentionables.add(new SimpleMentionable("Coletta Sabala", "Coletta Sabala"));
+        mentionables.add(new SimpleMentionable("Simona Desrochers", "Simona Desrochers"));
+        mentionables.add(new SimpleMentionable("Agustina Collings", "Agustina Collings"));
+        mentionables.add(new SimpleMentionable("Ulysses Munoz", "Ulysses Munoz"));
+        mentionables.add(new SimpleMentionable("Charissa Hise", "Charissa Hise"));
+        mentionables.add(new SimpleMentionable("Gloria Horgan", "Gloria Horgan"));
+        mentionables.add(new SimpleMentionable("Raylene Fraley", "Raylene Fraley"));
+        mentionables.add(new SimpleMentionable("Bobbi Valero", "Bobbi Valero"));
+        mentionables.add(new SimpleMentionable("Salena Beverly", "Salena Beverly"));
+        mentionables.add(new SimpleMentionable("Eldon Riddell", "Eldon Riddell"));
+        mentionables.add(new SimpleMentionable("Lanora Boatwright", "Lanora Boatwright"));
+        mentionables.add(new SimpleMentionable("Joaquin Feldt", "Joaquin Feldt"));
+        mentionables.add(new SimpleMentionable("Deirdre Setton", "Deirdre Setton"));
+        mentionables.add(new SimpleMentionable("Christen Adkison", "Christen Adkison"));
+        mentionables.add(new SimpleMentionable("Curtis Nam", "Curtis Nam"));
+        mentionables.add(new SimpleMentionable("Deon Beckmann", "Deon Beckmann"));
+        mentionables.add(new SimpleMentionable("Destiny Mirza", "Destiny Mirza"));
+        mentionables.add(new SimpleMentionable("Bao Hoch", "Bao Hoch"));
+        mentionables.add(new SimpleMentionable("Mayme Leonetti", "Mayme Leonetti"));
+        mentionables.add(new SimpleMentionable("Kayleigh Kendall", "Kayleigh Kendall"));
+        mentionables.add(new SimpleMentionable("Mai Vroman", "Mai Vroman"));
+        mentionables.add(new SimpleMentionable("Catalina Hardnett", "Catalina Hardnett"));
+        mentionables.add(new SimpleMentionable("Emory Jaqua", "Emory Jaqua"));
+        mentionables.add(new SimpleMentionable("Socorro Bramble", "Socorro Bramble"));
+        mentionables.add(new SimpleMentionable("Bill Rathke", "Bill Rathke"));
+        mentionables.add(new SimpleMentionable("Lanny Luedke", "Lanny Luedke"));
+        mentionables.add(new SimpleMentionable("Caron Bumgardner", "Caron Bumgardner"));
+        mentionables.add(new SimpleMentionable("John Falls", "John Falls"));
+        mentionables.add(new SimpleMentionable("Kati Glaspie", "Kati Glaspie"));
+        mentionables.add(new SimpleMentionable("Hettie Elrod", "Hettie Elrod"));
+        mentionables.add(new SimpleMentionable("Merideth Queener", "Merideth Queener"));
+        mentionables.add(new SimpleMentionable("Ivana Lowry", "Ivana Lowry"));
+        mentionables.add(new SimpleMentionable("Kenisha Sanluis", "Kenisha Sanluis"));
+        mentionables.add(new SimpleMentionable("Rochell Bunge", "Rochell Bunge"));
+        mentionables.add(new SimpleMentionable("Caitlin Croker", "Caitlin Croker"));
+        mentionables.add(new SimpleMentionable("Brady Besse", "Brady Besse"));
+        mentionables.add(new SimpleMentionable("Lise Bauer", "Lise Bauer"));
+        mentionables.add(new SimpleMentionable("Silas Bell", "Silas Bell"));
+        mentionables.add(new SimpleMentionable("Janelle Kallenbach", "Janelle Kallenbach"));
+        mentionables.add(new SimpleMentionable("Leland Meany", "Leland Meany"));
+        mentionables.add(new SimpleMentionable("Tammera Sturtevant", "Tammera Sturtevant"));
+        mentionables.add(new SimpleMentionable("Telma Costin", "Telma Costin"));
+        mentionables.add(new SimpleMentionable("Emmett Valderas", "Emmett Valderas"));
+        mentionables.add(new SimpleMentionable("Jaleesa Premo", "Jaleesa Premo"));
+        mentionables.add(new SimpleMentionable("Cortney Statler", "Cortney Statler"));
+        mentionables.add(new SimpleMentionable("Laverne Strickland", "Laverne Strickland"));
+        mentionables.add(new SimpleMentionable("Cinderella Presson", "Cinderella Presson"));
+        mentionables.add(new SimpleMentionable("Ivan Merrow", "Ivan Merrow"));
+        mentionables.add(new SimpleMentionable("Jerrica Swartout", "Jerrica Swartout"));
+        mentionables.add(new SimpleMentionable("Tiera Quill", "Tiera Quill"));
+        mentionables.add(new SimpleMentionable("Billi Kroner", "Billi Kroner"));
+        mentionables.add(new SimpleMentionable("Reginia Thomure", "Reginia Thomure"));
+        mentionables.add(new SimpleMentionable("Marilou Eichhorn", "Marilou Eichhorn"));
+        mentionables.add(new SimpleMentionable("Angelina Gehringer", "Angelina Gehringer"));
+        mentionables.add(new SimpleMentionable("Jarred Hollingshead", "Jarred Hollingshead"));
+        mentionables.add(new SimpleMentionable("Nelia Burt", "Nelia Burt"));
+        mentionables.add(new SimpleMentionable("Saundra Mellinger", "Saundra Mellinger"));
+        mentionables.add(new SimpleMentionable("Glennie Richie", "Glennie Richie"));
+        mentionables.add(new SimpleMentionable("Jestine Hiller", "Jestine Hiller"));
+        mentionables.add(new SimpleMentionable("Blanche Bucklin", "Blanche Bucklin"));
+        mentionables.add(new SimpleMentionable("Roxy Hampton", "Roxy Hampton"));
+        mentionables.add(new SimpleMentionable("Benjamin Mansir", "Benjamin Mansir"));
+        mentionables.add(new SimpleMentionable("Paola Calvillo", "Paola Calvillo"));
+        mentionables.add(new SimpleMentionable("Janene Macfarland", "Janene Macfarland"));
+        mentionables.add(new SimpleMentionable("Carlena Fendley", "Carlena Fendley"));
+        mentionables.add(new SimpleMentionable("Thao Goldner", "Thao Goldner"));
+        mentionables.add(new SimpleMentionable("Susannah Florio", "Susannah Florio"));
+        mentionables.add(new SimpleMentionable("Marissa Penman", "Marissa Penman"));
+        mentionables.add(new SimpleMentionable("Ozie Weesner", "Ozie Weesner"));
+        mentionables.add(new SimpleMentionable("Lily Felps", "Lily Felps"));
+        mentionables.add(new SimpleMentionable("Gonzalo Kraushaar", "Gonzalo Kraushaar"));
+        mentionables.add(new SimpleMentionable("Opal Seals", "Opal Seals"));
+        mentionables.add(new SimpleMentionable("Cherish Mangione", "Cherish Mangione"));
+        mentionables.add(new SimpleMentionable("Lesia Slinkard", "Lesia Slinkard"));
+        mentionables.add(new SimpleMentionable("Marcelene Guss", "Marcelene Guss"));
+        mentionables.add(new SimpleMentionable("Jarrod Furby", "Jarrod Furby"));
+        mentionables.add(new SimpleMentionable("Dori Gaytan", "Dori Gaytan"));
+        mentionables.add(new SimpleMentionable("Leanne Lapierre", "Leanne Lapierre"));
+        mentionables.add(new SimpleMentionable("Charlette Pedro", "Charlette Pedro"));
+        mentionables.add(new SimpleMentionable("Marco Wendt", "Marco Wendt"));
+        mentionables.add(new SimpleMentionable("Santina Failla", "Santina Failla"));
+        mentionables.add(new SimpleMentionable("Marylouise Tweedie", "Marylouise Tweedie"));
+        mentionables.add(new SimpleMentionable("Viviana Tezeno", "Viviana Tezeno"));
+        mentionables.add(new SimpleMentionable("Chassidy Maynes", "Chassidy Maynes"));
+        mentionables.add(new SimpleMentionable("Particia Bower", "Particia Bower"));
+        mentionables.add(new SimpleMentionable("Isis Ennals", "Isis Ennals"));
+        mentionables.add(new SimpleMentionable("Arcelia Glantz", "Arcelia Glantz"));
+        mentionables.add(new SimpleMentionable("Marcel Maltby", "Marcel Maltby"));
+        mentionables.add(new SimpleMentionable("Carline Denton", "Carline Denton"));
+        mentionables.add(new SimpleMentionable("Roosevelt Reidy", "Roosevelt Reidy"));
+        mentionables.add(new SimpleMentionable("Denita Hickok", "Denita Hickok"));
+        mentionables.add(new SimpleMentionable("Ingeborg Lozada", "Ingeborg Lozada"));
+        mentionables.add(new SimpleMentionable("Delorse Bergman", "Delorse Bergman"));
+        mentionables.add(new SimpleMentionable("Nevada Robinette", "Nevada Robinette"));
+        mentionables.add(new SimpleMentionable("Jasmine Wardwell", "Jasmine Wardwell"));
+        mentionables.add(new SimpleMentionable("Spencer Every", "Spencer Every"));
+        mentionables.add(new SimpleMentionable("Joette Roehrig", "Joette Roehrig"));
+        mentionables.add(new SimpleMentionable("Yee Vella", "Yee Vella"));
+        mentionables.add(new SimpleMentionable("Freddy Dieterich", "Freddy Dieterich"));
+        mentionables.add(new SimpleMentionable("Reta Denicola", "Reta Denicola"));
+        mentionables.add(new SimpleMentionable("Zachariah Striegel", "Zachariah Striegel"));
+        mentionables.add(new SimpleMentionable("Ching Hornak", "Ching Hornak"));
+        mentionables.add(new SimpleMentionable("Doretha Baumeister", "Doretha Baumeister"));
+        mentionables.add(new SimpleMentionable("Shon Even", "Shon Even"));
+        mentionables.add(new SimpleMentionable("Regina Allis", "Regina Allis"));
+        mentionables.add(new SimpleMentionable("Carlee Marquette", "Carlee Marquette"));
+        mentionables.add(new SimpleMentionable("Gay Dollins", "Gay Dollins"));
+        mentionables.add(new SimpleMentionable("Floretta Utley", "Floretta Utley"));
+        mentionables.add(new SimpleMentionable("Josie Keener", "Josie Keener"));
+
+        return mentionables;
     }
 
 }
