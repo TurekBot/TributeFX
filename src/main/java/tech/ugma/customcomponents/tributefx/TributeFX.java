@@ -31,7 +31,9 @@ public class TributeFX {
     private static URL promptTextConfiguration = TributeFX.class.getResource("configurePromptText.js");
 
     /**
-     * The default configuration for the Tribute. You can use your own with {@link TributeFX#setTributeConfiguration(URL)}.
+     * The default configuration for the Tribute. You can replace it with your own using {@link TributeFX#changeDefaultTributeConfiguration(URL)}.
+     * However, to just configure a certain WebView (usual use case) definitely use {@link TributeFX#configureWebView(WebView, URL)} to pass in your
+     * custom configuration JavaScript file.
      */
     private static URL tributeConfiguration = TributeFX.class.getResource("configureTribute.js");
 
@@ -304,7 +306,7 @@ public class TributeFX {
      * @param tributeConfiguration a URL to your JavaScript configuration file (I'd get it with something like <code>YourClass.class.getResource("customConfiguration.js");</code>.)
      *                             <p>Here's some <a href="https://stackoverflow.com/a/3862115/5432315">advice for getting resources.</a>
      */
-    public static void setTributeConfiguration(URL tributeConfiguration) {
+    public static void changeDefaultTributeConfiguration(URL tributeConfiguration) {
         TributeFX.tributeConfiguration = tributeConfiguration;
     }
 
@@ -314,7 +316,7 @@ public class TributeFX {
      * <p>
      * However, if you want to change how the text that gets left behind when you make a mention looks:
      * try configuring the <code>selectTemplate</code> to leave behind a span with a custom id and then style that id.
-     * See {@link TributeFX#setTributeConfiguration(java.net.URL)}
+     * See {@link TributeFX#configureWebView(WebView, URL)}
      *
      * @return
      */
@@ -326,7 +328,7 @@ public class TributeFX {
      * This sets the styles <i>within</i> the WebView.
      * <p>
      * To customize how the mentions look, you'll need to configure the <code>selectTemplate</code> <small>(using
-     * {@link TributeFX#setTributeConfiguration(URL)})</small> to leave behind something like
+     * {@link TributeFX#configureWebView(WebView, URL)})</small> to leave behind something like
      * {@code <span class="mention">@jSample</span>}, and then style the <code>.mention</code> class in your stylesheet.
      * <p>
      * If you really feel like it, you can style the <code>tributable-container</code> <small>(but be
@@ -358,34 +360,50 @@ public class TributeFX {
      * }</pre>
      * <p>
      * To expose any extra attributes, you'll have to override {@link Mentionable#toJsString()} to display your object correctly.
+     * <p>
      * In order to leave any of those extra attributes behind in some hidden markup, you'll need to configure
-     * the `selectTemplate`. See <a href="https://github.com/zurb/tribute#a-collection">https://github.com/zurb/tribute#a-collection</a>
+     * the <code>selectTemplate</code>. See {@link TributeFX#configureWebView(WebView, URL)}
+     * <h3>Custom Mentionable Example</h3>
      * <pre>{@code
      * public class Person implements Mentionable {
      *     String fullName;
      *     String userName;
+     *     String email;
      *
-     *     public Person(String fullName, String userName) {
+     *     public Person(String fullName, String userName, String email) {
      *         this.fullName = fullName;
      *         this.userName = userName;
+     *         this.email = email;
      *     }
      *     @Override
      *     public String getKey() {return fullName;}
      *     @Override
      *     public String getValue() {return userName;}
+     *     @Override
+     *     public String toJsString() { //Includes email in the string that gets turned into a JavaScript object
+     *         return  "{key: '" + getKey() + "', value: '" + getValue() + "', email: '" + email + "'}";
+     *     }
      * }
      * }</pre>
      */
     public interface Mentionable {
         /**
-         * This should return your object as a JavaScript String.
-         * You should override this method if you want to expose any extra attributes besides key and value.
+         * This should return a string that, once turned into a JavaScript Object, should accurately represent your class
+         * in JavaScript.
          * <p>
-         * A few examples:
-         * <pre>{@code
-         * "{key: '" + getKey() + "', value: '" + getValue() + "'}"; //The default if you don't override
-         * "{key: '" + getKey() + "', value: '" + getValue() + "', email: '" + getEmail() +"'}";}
-         * </pre>
+         * If you don't need to expose anything extra, you're done here. The default is already set to:
+         * <p>
+         * {@code "{key: '" + getKey() + "', value: '" + getValue() + "'}"; //The default if you don't override anything}
+         * <p>
+         * The resulting string, <code>{key: 'John Sample', value: 'jsample'}</code>, will eventually be recognized
+         * as an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#Object_literals">Object Literal</a> by the WebEngine.
+         * <h3>Extra attributes</h3>
+         * You should <i>override</i> this method <i>if you want to expose any extra attributes:</i>.
+         * <pre><code>
+         * {@literal @}Override
+         * public String toJsString() {
+         *     return  "{key: '" + getKey() + "', value: '" + getValue() + "', email: '" + email + "'}"; //Exposes email, too
+         * }</code></pre>
          *
          * @return your object formatted as a javascript object; see examples.
          */
@@ -394,17 +412,27 @@ public class TributeFX {
         }
 
         /**
-         * By default this is the thing to lookup. The value that is looked up can be configured by changing
-         * the value of `lookup` in the Tribute's configuration; see <a href="https://github.com/zurb/tribute#a-collection">https://github.com/zurb/tribute#a-collection</a>
-         * Change the configuration using {@link TributeFX#setTributeConfiguration(java.net.URL)}
+         * By default, this (<code>key</code>) is the thing Tribute searches for when the user starts typing something like "@John".
+         * <p>
+         * The attribute that Tribute uses can be configured by changing the value of <code>lookup</code> in
+         * the Tribute's <a href="https://github.com/zurb/tribute#a-collection">configuration</a>.
+         * <p>
+         * Tributize your WebView with custom configuration using {@link TributeFX#configureWebView(WebView, URL)}
          */
         String getKey();
 
         /**
-         * By default this is the thing that will get left behind after the mention is made.
-         * HOWEVER, for more involved things, like when you want to include identifying markup,
-         * like, <span contenteditable="false" id="mention" email="username@example.com">John Sample</span>,
-         * configure the `selectTemplate` function; see https://github.com/zurb/tribute#a-collection
+         * By default, this (<code>value</code>) is the thing that Tribute will leave behind after the mention is made.
+         * <p>
+         * In @mention systems, often, you search for the person's name, but want their <i>username</i> to be left behind.
+         * <i>In this case</i>, the <i>username</i> would be the value.
+         * <p>
+         * HOWEVER, for more involved things, like when you want the value to include identifying markup,
+         * like, {@code <span contenteditable="false" id="mention" email="username@example.com">John Sample</span>},
+         * configure the <code>selectTemplate</code> function.
+         *
+         * @see <a href="https://github.com/zurb/tribute#a-collection">Tribute Documentation</a> for how to configure a
+         * <code>selectTemplate</code>
          */
         String getValue();
     }

@@ -26,9 +26,8 @@ public class DemoTributeFX extends Application {
 
         ArrayList<Person> mentionables = createList();
 
-        //Change configuration
+        //Use custom configuration
         URL demoConfig = DemoTributeFX.class.getResource("demoTributeConfiguration.js");
-//        TributeFX.setTributeConfiguration(demoConfig);
 
         //Give custom style
 //        TributeFX.setWebViewInternalStyleSheet(textArea, customStyleSheet);
@@ -57,36 +56,37 @@ public class DemoTributeFX extends Application {
 
     private ArrayList<Person> createList() {
         ArrayList<Person> mentionables = new ArrayList<>();
-        mentionables.add(new Person("Brad", "Turek", "UgmaDevelopment@gmail.com"));
-        mentionables.add(new Person("Rick", "Turek", "Rick.Turek@sundance.net"));
-        mentionables.add(new Person("Greg", "Gabbitas", "Greg.Gabbitas@sundance.net"));
-        mentionables.add(new Person("Deborah", "Kaiser", "Deborah.Kaiser@sundance.net"));
-        mentionables.add(new Person("John", "Sample", "John.Sample@gmail.com"));
+        mentionables.add(new Person("Brad", "bturek", "UgmaDevelopment@gmail.com"));
+        mentionables.add(new Person("Rick", "rturek", "Rick.Turek@sundance.net"));
+        mentionables.add(new Person("Greg", "ggabbitas", "Greg.Gabbitas@sundance.net"));
+        mentionables.add(new Person("Deborah", "dkaiser", "Deborah.Kaiser@sundance.net"));
+        mentionables.add(new Person("John", "jsample", "John.Sample@gmail.com"));
         return mentionables;
     }
 
 
-
     public class Person implements Mentionable {
-        String firstName;
-        String lastName;
+        String fullName;
+        String userName;
         String email;
 
-        public Person(String firstName, String lastName, String email) {
-            this.firstName = firstName;
-            this.lastName = lastName;
+        public Person(String fullName, String userName, String email) {
+            this.fullName = fullName;
+            this.userName = userName;
             this.email = email;
         }
 
         @Override
-        public String getKey() {
-            return firstName + " " + lastName;
-        }
+        public String getKey() {return fullName;}
 
         @Override
-        public String getValue() {
-            return email;
+        public String getValue() {return userName;}
+
+        @Override
+        public String toJsString() {
+            return  "{key: '" + getKey() + "', value: '" + getValue() + "', email: '" + email + "'}";
         }
+
     }
 
 
