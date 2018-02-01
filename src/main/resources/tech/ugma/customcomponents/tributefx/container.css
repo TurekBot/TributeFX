@@ -4,7 +4,6 @@
 */
 
 .mention {
-    color: gray;
     font-weight: bold;
 }
 
@@ -39,7 +38,4 @@ html, body {
 
 #prompt-text {
     color: grey;
-    /*opacity: .5;*/
-    /*position: absolute;*/
-    /*bottom: 20%;*/
 }

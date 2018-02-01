@@ -1,70 +1,38 @@
-# Project Title
+# TributeFX
 
-One Paragraph of project description goes here
+An <span title="meaning until a better, native, one is made for JavaFX"><small><small>in-the-mean-time</small></small></span> @mention library for JavaFX. A JavaFX wrapper for [Tribute.js][Tribute]
 
 ## Getting Started
+* Coming Soon: Maven Central
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Or
 
-### Prerequisites
+* Download/Clone the repo from here and build it for yourself with `mvn clean install`
 
-What things you need to install the software and how to install them
+### Demo
+[![Hunger Games Demo]][Hunger Games Demo]
 
-```
-Give examples
-```
+### Quickstart Example
+To just _try it out_, make a WebView and do:
 
-### Installing
+    TributeFX.tributifyWebView(webView);
+    TributeFX.addMentionables(TributeFX.createSampleMentionableList(), webView.getEngine());
 
-A step by step series of examples that tell you have to get a development env running
+See the [DemoWithDefaults] for such a working example.
 
-Say what the step will be
+### Customization
+Once you've cut your teeth on the basics, you can whip out some JavaScript and [get custom with it]:
 
-```
-Give the example
-```
+    URL customConfig = DemoWithCustomConfig.class.getResource("customTributeConfiguration.js");
 
-And repeat
+    TributeFX.tributifyWebView(webView, customConfig);
 
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+    WebEngine webEngine = webView.getEngine();
+    ArrayList<TributeFX.SimpleMentionable> mentionables = TributeFX.createSampleMentionableList();
+    
+    TributeFX.addMentionables(mentionables, webEngine);
+    
+See [DemoWithCustomConfig] to really get jiggy with it.
 
 ## Versioning
 
@@ -72,16 +40,21 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Zurb** - *JavaScript @mention Engine* - [Tribute]
+* **Bradley Turek** - *Initial Wrapping of Tribute*
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-## Acknowledgments
+[Tribute]: https://github.com/zurb/tribute
+[Hunger Games Demo]: https://i.imgur.com/yLadZRo.gif
+[DemoWithDefaults]: src/main/java/tech/ugma/customcomponents/tributefx/demo/DemoWithDefaults.java
 
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+[Tribute]: https://github.com/zurb/tribute
+[Hunger Games Demo]: https://i.imgur.com/yLadZRo.gif
+[DemoWithDefaults]: src/main/java/tech/ugma/customcomponents/tributefx/demo/DemoWithDefaults.java
+[get custom with it]: https://github.com/zurb/tribute#a-collection "See Tribute's website for all the configuration options."
+[DemoWithCustomConfig]: src/main/java/tech/ugma/customcomponents/tributefx/demo/DemoWithCustomConfig.java

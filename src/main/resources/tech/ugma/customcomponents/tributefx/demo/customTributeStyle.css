@@ -1,0 +1,16 @@
+.mention {
+    /*You can style the text however you want*/
+    color: red;
+    font-weight: normal !important; /*The "!important" overrides any previous styling*/
+
+    /*See https://www.w3schools.com/cssref/css_animatable.asp*/
+    animation: mymove 250ms;
+}
+
+/*Tricky CSS Animation*/
+/*See https://www.w3schools.com/cssref/css_animatable.asp*/
+@keyframes mymove {
+    from {letter-spacing: 0px;}
+    50% {letter-spacing: 3px;}
+    to {letter-spacing: 0px;}
+}

@@ -47,6 +47,11 @@ public class DemoTributeFX extends Application {
         BorderPane root = new BorderPane(vBox);
         Scene theScene = new Scene(root);
 
+        submitButton.setOnAction(action -> {
+            String html = (String) webView.getEngine().executeScript("document.documentElement.outerHTML");
+            realTextArea.setText(html);
+        });
+
 
         primaryStage.setTitle("TributeFX Demo");
         primaryStage.setScene(theScene);

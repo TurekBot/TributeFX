@@ -240,7 +240,6 @@ public class TributeFX {
 
     private static void executeJavaScriptCommands(WebEngine webEngine, String commands) {
         Worker.State state = webEngine.getLoadWorker().getState();
-        System.out.println("Current State: " + webEngine.getLoadWorker().getState());
         if (webEngine.getDocument() == null) {
             //We need to put anything that has to do with the container (like attaching a tribute to it)
             //in a place that will only be invoked once the container/document is loaded.
@@ -346,6 +345,13 @@ public class TributeFX {
      * To customize how the mentions look, you'll need to configure the <code>selectTemplate</code> <small>(using
      * {@link TributeFX#tributifyWebView(WebView, URL)})</small> to leave behind something like
      * {@code <span class="mention">@jSample</span>}, and then style the <code>.mention</code> class in your stylesheet.
+     * <p>
+     * <u>If your applied style doesn't work</u>, try two things:
+     * <ul>
+     *     <li>Make sure you're getting your stylesheet right</li>
+     *     <li>Try <a href="https://stackoverflow.com/a/31370047/5432315">adding "!important"</a> after your style—this
+     *     will override any other style before you.</li>
+     * </ul>
      * <p>
      * If you really feel like it, you can style the <code>tributable-container</code> <small>(but be
      * careful because if you change its size it might get ugly.)</small>
@@ -487,6 +493,7 @@ public class TributeFX {
 
     /**
      * Names courtesy of http://listofrandomnames.com
+     *
      * @return a sample list of mentionables to test with
      */
     public static ArrayList<SimpleMentionable> createSampleMentionableList() {
