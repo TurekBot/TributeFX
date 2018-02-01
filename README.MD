@@ -20,6 +20,17 @@ To just _try it out_, make a WebView and do:
 
 See the [DemoWithDefaults] for such a working example.
 
+### Adding Mentionables
+If you're keeping it simple, use, [`SimpleMentionable`]
+    
+    ArrayList<SimpleMentionable> mentionables = new ArrayList<>();
+    mentionables.add(new SimpleMentionable("key", "value"));
+    mentionables.add(new SimpleMentionable("John Sample", "jjSwample22"));
+    
+    TributeFX.addMentionables(webView, mentionables);
+
+For more complicated Mentionables, see `Mentionable`'s Documentation.
+
 ### Customization
 Once you've cut your teeth on the basics, you can whip out some JavaScript and [get custom with it]:
 
@@ -58,3 +69,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [DemoWithDefaults]: src/main/java/tech/ugma/customcomponents/tributefx/demo/DemoWithDefaults.java
 [get custom with it]: https://github.com/zurb/tribute#a-collection "See Tribute's website for all the configuration options."
 [DemoWithCustomConfig]: src/main/java/tech/ugma/customcomponents/tributefx/demo/DemoWithCustomConfig.java
+[`SimpleMentionable`]: about:blank
