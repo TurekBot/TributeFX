@@ -32,7 +32,7 @@ public class DemoTributeFX extends Application {
         //Give custom style
 //        TributeFX.setWebViewInternalStyleSheet(textArea, customStyleSheet);
 
-        TributeFX.configureWebView(webView, demoConfig);
+        TributeFX.tributifyWebView(webView, demoConfig);
 
         Platform.runLater(() -> {
             TributeFX.addMentionables(mentionables, webView.getEngine());

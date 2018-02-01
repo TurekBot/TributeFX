@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-// TODO: 1/30/2018 Add getters and setters for the configuration files
 public class TributeFX {
 
     /**
@@ -28,11 +27,12 @@ public class TributeFX {
      * <p>
      * Change the text using {@link TributeFX#turnPromptTextOn(java.lang.String)}.
      */
+    // FIXME: 1/31/2018 Change this to be configurable per WebView, not TributeFX class.
     private static URL promptTextConfiguration = TributeFX.class.getResource("configurePromptText.js");
 
     /**
      * The default configuration for the Tribute. You can replace it with your own using {@link TributeFX#changeDefaultTributeConfiguration(URL)}.
-     * However, to just configure a certain WebView (usual use case) definitely use {@link TributeFX#configureWebView(WebView, URL)} to pass in your
+     * However, to just configure a certain WebView (usual use case) definitely use {@link TributeFX#tributifyWebView(WebView, URL)} to pass in your
      * custom configuration JavaScript file.
      */
     private static URL tributeConfiguration = TributeFX.class.getResource("configureTribute.js");
@@ -57,15 +57,18 @@ public class TributeFX {
     private static String promptText = "To mention someone try, \"Hey, @John Sample, can you...\"";
 
     /**
-     * Default config; to have mentionables added later
-     * TODO: 1/31/2018 Use that one "share documentation" tag
+     * <h2>Adds <a href="https://github.com/zurb/tribute">Tribute</a> to your webView, allowing for @mentions.</h2>
+     * <h3>Configures a webView with the <i>default</i> configuration; to have {@link Mentionable mentionables} added later.</h3>
+     * To add mentionables use {@link TributeFX#addMentionables(ArrayList, WebEngine)}
+     * <p>
+     * If you want to customize your Tribute, see {@link TributeFX#tributifyWebView(WebView, URL)}
      */
-    public static void configureWebView(WebView webView) {
-        configureWebView(webView, null, null);
+    public static void tributifyWebView(WebView webView) {
+        tributifyWebView(webView, null, null);
     }
 
     // TODO: 1/31/2018 Go through and make sure all is well for using this method multiple times on the same webView—no duplicate stuff.
-    protected static void configureWebView(WebView webView, ArrayList<? extends Mentionable> mentionables, URL customConfigURL) {
+    protected static void tributifyWebView(WebView webView, ArrayList<? extends Mentionable> mentionables, URL customConfigURL) {
         WebEngine webEngine = webView.getEngine();
 
         // Load HTML
@@ -254,20 +257,51 @@ public class TributeFX {
     }
 
     /**
-     * For configuring a webView with the default configuration and adding some mentionables.
-     * TODO: 1/31/2018 Use that one "share documentation" tag
+     * <h2>Adds <a href="https://github.com/zurb/tribute">Tribute</a> to your webView, allowing for @mentions.</h2>
+     * <h3>Configures a webView with the default configuration and adds a list of {@link Mentionable mentionables}.</h3>
      */
-    public static void configureWebView(WebView webView, ArrayList<? extends Mentionable> mentionables) {
-        configureWebView(webView, mentionables, null);
+    public static void tributifyWebView(WebView webView, ArrayList<? extends Mentionable> mentionables) {
+        tributifyWebView(webView, mentionables, null);
     }
 
     /**
-     * For configuring a webView with a custom configuration; to have mentionables added later.
-     * TODO: 1/31/2018 Use that one "share documentation" tag
+     * <h2>Adds <a href="https://github.com/zurb/tribute">Tribute</a> to your webView, allowing for @mentions.</h2>
+     * <h3>Configures a webView with a <u>custom configuration</u>; to have {@link Mentionable mentionables} added later.</h3>
+     * <p>
+     * When using your own configuration keep in mind a few things
+     * <ul>
+     * <li>Configurations are written in JavaScript.</li>
+     * <li>The <a href="https://github.com/zurb/tribute#a-collection">default Tribute</a> looks like this.</li>
+     * <ul>
+     * <li>Though you won't add Mentionables till later, make sure to include {@code values: [],} in your
+     * Tribute's configuration, regardless—otherwise there will be nothing to add to, later.</li>
+     * <li>For full details about all the configuration options, see <a href="https://github.com/zurb/tribute">Tribute's Website</a></li>
+     * </ul>
+     * <li>By overriding the default configuration you're responsible for
+     * <a href="https://github.com/zurb/tribute#attaching-to-elements">"attaching"</a> the tribute to the right
+     * element.</li>
+     * <li>If you use a custom {@link Mentionable Mentionable}</li>
+     * <ul>
+     * <li>You'll only be able to access elements that you've specified in the {@link Mentionable#toJsString() toJString}
+     * method. See toJsString()'s documentation to see how easy this is.</li>
+     * </ul>
+     * </ul>
+     * <p>
+     * To add mentionables use {@link TributeFX#addMentionables(ArrayList, WebEngine, String, int)} and specify your
+     * Tribute variable's name <small>(probably <code>tribute</code>)</small> and the collection you want to add to <small>(0, if you only
+     * have one configuration/collection object)</small>.
+     * <p>
+     *
+     * @param customConfigURL a URL to your JavaScript configuration file (I'd get it with something like <code>YourClass.class.getResource("customConfiguration.js");</code>.)
+     *                        <p>Here's some <a href="https://stackoverflow.com/a/3862115/5432315">advice for getting resources.</a>
      */
-    public static void configureWebView(WebView webView, URL customConfigURL) {
-        configureWebView(webView, null, customConfigURL);
-        // TODO: 1/31/2018 Check for unwanted nulls
+    public static void tributifyWebView(WebView webView, URL customConfigURL) {
+        if (customConfigURL == null) {
+            throw new IllegalArgumentException("The URL can't be null; this happens if you're not referencing your resource right—it happens to everyone." +
+                    "\n\tHere's some advice for getting resources that helped me: https://stackoverflow.com/a/3862115/5432315");
+        }
+
+        tributifyWebView(webView, null, customConfigURL);
     }
 
     public static void turnPromptTextOn() {
@@ -287,25 +321,7 @@ public class TributeFX {
         return tributeConfiguration;
     }
 
-    /**
-     * When using your own configuration keep in mind a few things
-     * <ul>
-     * <li>Configurations are written in JavaScript.</li>
-     * <li>What the <a href="">default Tribute</a> looks like.</li>
-     * <ul>
-     * <li>For full details about all the configuration options, see <a href="">Tribute's Website</a></li>
-     * </ul>
-     * <li>If you use a custom {@link Mentionable Mentionable}</li>
-     * <ul>
-     * <li>You'll only be able to access elements that you've specified in the {link toJsString()} method. See toJsString()'s documentation to see how easy this is.</li>
-     * </ul>
-     * <li>We assume your tribute variable's name is <code>tribute</code>. If you have a different variable name, the append functionality won't work.</li>
-     * <li>By overriding the default configuration you're responsible for "attaching" the tribute to the right element. Stick with <code>tribute.attach(document.getElementsById('tributable-container'));</code></li>
-     * </ul>
-     *
-     * @param tributeConfiguration a URL to your JavaScript configuration file (I'd get it with something like <code>YourClass.class.getResource("customConfiguration.js");</code>.)
-     *                             <p>Here's some <a href="https://stackoverflow.com/a/3862115/5432315">advice for getting resources.</a>
-     */
+
     public static void changeDefaultTributeConfiguration(URL tributeConfiguration) {
         TributeFX.tributeConfiguration = tributeConfiguration;
     }
@@ -316,7 +332,7 @@ public class TributeFX {
      * <p>
      * However, if you want to change how the text that gets left behind when you make a mention looks:
      * try configuring the <code>selectTemplate</code> to leave behind a span with a custom id and then style that id.
-     * See {@link TributeFX#configureWebView(WebView, URL)}
+     * See {@link TributeFX#tributifyWebView(WebView, URL)}
      *
      * @return
      */
@@ -328,7 +344,7 @@ public class TributeFX {
      * This sets the styles <i>within</i> the WebView.
      * <p>
      * To customize how the mentions look, you'll need to configure the <code>selectTemplate</code> <small>(using
-     * {@link TributeFX#configureWebView(WebView, URL)})</small> to leave behind something like
+     * {@link TributeFX#tributifyWebView(WebView, URL)})</small> to leave behind something like
      * {@code <span class="mention">@jSample</span>}, and then style the <code>.mention</code> class in your stylesheet.
      * <p>
      * If you really feel like it, you can style the <code>tributable-container</code> <small>(but be
@@ -362,7 +378,7 @@ public class TributeFX {
      * To expose any extra attributes, you'll have to override {@link Mentionable#toJsString()} to display your object correctly.
      * <p>
      * In order to leave any of those extra attributes behind in some hidden markup, you'll need to configure
-     * the <code>selectTemplate</code>. See {@link TributeFX#configureWebView(WebView, URL)}
+     * the <code>selectTemplate</code>. See {@link TributeFX#tributifyWebView(WebView, URL)}
      * <h3>Custom Mentionable Example</h3>
      * <pre>{@code
      * public class Person implements Mentionable {
@@ -417,7 +433,7 @@ public class TributeFX {
          * The attribute that Tribute uses can be configured by changing the value of <code>lookup</code> in
          * the Tribute's <a href="https://github.com/zurb/tribute#a-collection">configuration</a>.
          * <p>
-         * Tributize your WebView with custom configuration using {@link TributeFX#configureWebView(WebView, URL)}
+         * Tributize your WebView with custom configuration using {@link TributeFX#tributifyWebView(WebView, URL)}
          */
         String getKey();
 

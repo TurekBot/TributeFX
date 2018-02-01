@@ -1,8 +1,5 @@
 var tribute = new Tribute({
-  values: [
-    {key: 'Phil Heartman', value: 'pheartman'},
-    {key: 'Gordon Ramsey', value: 'gramsey'}
-  ],
+  values: [],
   selectTemplate: function(person) {
     return '<span contenteditable="false" id="mention" email="' + person.original.email +
     '" title="' + person.original.email + '">' + this.current.collection.trigger
