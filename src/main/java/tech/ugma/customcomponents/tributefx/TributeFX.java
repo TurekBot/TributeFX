@@ -649,6 +649,7 @@ public class TributeFX {
         mentionables.add(new SimpleMentionable("Gay Dollins", "Gay Dollins"));
         mentionables.add(new SimpleMentionable("Floretta Utley", "Floretta Utley"));
         mentionables.add(new SimpleMentionable("Josie Keener", "Josie Keener"));
+        mentionables.add(new SimpleMentionable("John Sample", "John Sample"));
 
         return mentionables;
     }
