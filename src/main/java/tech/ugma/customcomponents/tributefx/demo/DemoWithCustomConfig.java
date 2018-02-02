@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import tech.ugma.customcomponents.tributefx.SimpleMentionable;
 import tech.ugma.customcomponents.tributefx.TributeFX;
 
-import java.net.URL;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class DemoWithCustomConfig extends Application {
@@ -20,7 +20,7 @@ public class DemoWithCustomConfig extends Application {
         Scene scene = new Scene(root);
 
         //Add your own custom Tribute configuration (see https://github.com/zurb/tribute#a-collection)
-        URL customConfig = DemoWithCustomConfig.class.getResource("customTributeConfiguration.js");
+        InputStream customConfig = DemoWithCustomConfig.class.getResourceAsStream("customTributeConfiguration.js");
 
         TributeFX.tributifyWebView(webView, customConfig);
 

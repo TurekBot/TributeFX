@@ -31,14 +31,14 @@ public class TributeFX {
      * Change the text using {@link TributeFX#turnPromptTextOn(java.lang.String)}.
      */
     // FIXME: 1/31/2018 Change this to be configurable per WebView, not TributeFX class.
-    private static URL promptTextConfiguration = TributeFX.class.getResource("configurePromptText.js");
+    private static InputStream promptTextConfiguration;
 
     /**
-     * The default configuration for the Tribute. You can replace it with your own using {@link TributeFX#changeDefaultTributeConfiguration(URL)}.
-     * However, to just configure a certain WebView (usual use case) definitely use {@link TributeFX#tributifyWebView(WebView, URL)} to pass in your
+     * The default configuration for the Tribute. You can replace it with your own using {@link TributeFX#changeDefaultTributeConfiguration(InputStream)}.
+     * However, to just configure a certain WebView (usual use case) definitely use {@link TributeFX#tributifyWebView(WebView, InputStream)} to pass in your
      * custom configuration JavaScript file.
      */
-    private static URL tributeConfiguration = TributeFX.class.getResource("configureTribute.js");
+    private static InputStream tributeConfiguration;
 
     /**
      * The actual Tribute Library. Version 3.1.3. See <a href="https://github.com/zurb/tribute/releases">Tribute's Website</a>
@@ -61,6 +61,8 @@ public class TributeFX {
 
     static {
         tributeLibrary = TributeFX.class.getResourceAsStream("tribute-js/tribute.js");
+        tributeConfiguration = TributeFX.class.getResourceAsStream("configureTribute.js");
+        promptTextConfiguration = TributeFX.class.getResourceAsStream("configurePromptText.js");
     }
 
     /**
@@ -68,14 +70,14 @@ public class TributeFX {
      * <h3>Configures a webView with the <i>default</i> configuration; to have {@link Mentionable mentionables} added later.</h3>
      * To add mentionables use {@link TributeFX#addMentionables(ArrayList, WebEngine)}
      * <p>
-     * If you want to customize your Tribute, see {@link TributeFX#tributifyWebView(WebView, URL)}
+     * If you want to customize your Tribute, see {@link TributeFX#tributifyWebView(WebView, InputStream)}
      */
     public static void tributifyWebView(WebView webView) {
         tributifyWebView(webView, null, null);
     }
 
     // TODO: 1/31/2018 Go through and make sure all is well for using this method multiple times on the same webView—no duplicate stuff.
-    protected static void tributifyWebView(WebView webView, ArrayList<? extends Mentionable> mentionables, URL customConfigURL) {
+    protected static void tributifyWebView(WebView webView, ArrayList<? extends Mentionable> mentionables, InputStream customConfigURL) {
         WebEngine webEngine = webView.getEngine();
 
         // Load HTML
@@ -156,8 +158,8 @@ public class TributeFX {
 //        });
     }
 
-    private static void configureTribute(WebEngine webEngine, URL customConfigURL) {
-        URL configuration;
+    private static void configureTribute(WebEngine webEngine, InputStream customConfigURL) {
+        InputStream configuration;
         if (customConfigURL == null) {
             configuration = tributeConfiguration;
         } else {
@@ -231,18 +233,6 @@ public class TributeFX {
      */
     private static void mimicBlueGlow(WebView webView) {
         webView.getStylesheets().add(TributeFX.class.getResource("webView.css").toString());
-    }
-
-    private static String readFile(URL file) {
-        String fileContents = null;
-        try {
-            fileContents = new String(Files.readAllBytes(Paths.get(file.toURI())));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return fileContents;
     }
 
     /**
@@ -322,16 +312,16 @@ public class TributeFX {
      * have one configuration/collection object)</small>.
      * <p>
      *
-     * @param customConfigURL a URL to your JavaScript configuration file (I'd get it with something like <code>YourClass.class.getResource("customConfiguration.js");</code>.)
+     * @param customConfig an InputStream to your JavaScript configuration file (I'd get it with something like <code>YourClass.class.getResourceAsStream("customConfiguration.js");</code>.)
      *                        <p>Here's some <a href="https://stackoverflow.com/a/3862115/5432315">advice for getting resources.</a>
      */
-    public static void tributifyWebView(WebView webView, URL customConfigURL) {
-        if (customConfigURL == null) {
-            throw new IllegalArgumentException("The URL can't be null; this happens if you're not referencing your resource right—it happens to everyone." +
+    public static void tributifyWebView(WebView webView, InputStream customConfig) {
+        if (customConfig == null) {
+            throw new IllegalArgumentException("The InputStream can't be null; this happens if you're not referencing your resource right—it happens to everyone." +
                     "\n\tHere's some advice for getting resources that helped me: https://stackoverflow.com/a/3862115/5432315");
         }
 
-        tributifyWebView(webView, null, customConfigURL);
+        tributifyWebView(webView, null, customConfig);
     }
 
     public static void turnPromptTextOn() {
@@ -347,12 +337,12 @@ public class TributeFX {
         showPromptText = false;
     }
 
-    public static URL getTributeConfiguration() {
+    public static InputStream getTributeConfiguration() {
         return tributeConfiguration;
     }
 
 
-    public static void changeDefaultTributeConfiguration(URL tributeConfiguration) {
+    public static void changeDefaultTributeConfiguration(InputStream tributeConfiguration) {
         TributeFX.tributeConfiguration = tributeConfiguration;
     }
 
@@ -360,9 +350,9 @@ public class TributeFX {
      * If you need to change how the tribute's menu 'n things look, try adding to this file (or better yet, just make any changes
      * to the appropriate classes in your own stylesheet.).
      * <p>
-     * However, if you want to change how the text that gets left behind when you make a mention looks:
-     * try configuring the <code>selectTemplate</code> to leave behind a span with a custom id and then style that id.
-     * See {@link TributeFX#tributifyWebView(WebView, URL)}
+     * However, if you want to change the text/HTML that gets left behind when you make a mention,
+     * try configuring the <code>selectTemplate</code>. You can leave behind a span with a custom id and then style that id.
+     * See {@link TributeFX#tributifyWebView(WebView, InputStream)}
      */
     public static URL getTributeLibraryStylesheet() {
         return tributeLibraryStylesheet;
@@ -372,7 +362,7 @@ public class TributeFX {
      * This sets the styles <i>within</i> the WebView.
      * <p>
      * To customize how the mentions look, you'll need to configure the <code>selectTemplate</code> <small>(using
-     * {@link TributeFX#tributifyWebView(WebView, URL)})</small> to leave behind something like
+     * {@link TributeFX#tributifyWebView(WebView, InputStream)})</small> to leave behind something like
      * {@code <span class="mention">@jSample</span>}, and then style the <code>.mention</code> class in your stylesheet.
      * <p>
      * <u>If your applied style doesn't work</u>, try two things:

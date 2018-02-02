@@ -11,10 +11,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import tech.ugma.customcomponents.tributefx.TributeFX;
 import tech.ugma.customcomponents.tributefx.Mentionable;
+import tech.ugma.customcomponents.tributefx.TributeFX;
 
-import java.net.URL;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class DemoTributeFX extends Application {
@@ -27,16 +27,14 @@ public class DemoTributeFX extends Application {
         ArrayList<Person> mentionables = createList();
 
         //Use custom configuration
-        URL demoConfig = DemoTributeFX.class.getResource("demoTributeConfiguration.js");
+        InputStream demoConfig = DemoTributeFX.class.getResourceAsStream("demoTributeConfiguration.js");
 
         //Give custom style
 //        TributeFX.setWebViewInternalStyleSheet(textArea, customStyleSheet);
 
         TributeFX.tributifyWebView(webView, demoConfig);
 
-        Platform.runLater(() -> {
-            TributeFX.addMentionables(mentionables, webView.getEngine());
-        });
+        Platform.runLater(() -> TributeFX.addMentionables(mentionables, webView.getEngine()));
 
         VBox vBox = new VBox(10);
         vBox.setPadding(new Insets(20));
@@ -75,7 +73,7 @@ public class DemoTributeFX extends Application {
         String userName;
         String email;
 
-        public Person(String fullName, String userName, String email) {
+        Person(String fullName, String userName, String email) {
             this.fullName = fullName;
             this.userName = userName;
             this.email = email;

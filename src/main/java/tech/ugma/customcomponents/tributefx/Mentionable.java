@@ -28,7 +28,7 @@ import java.net.URL;
  * To expose any extra attributes, you'll have to override {@link Mentionable#toJsString()} to display your object correctly.
  * <p>
  * In order to leave any of those extra attributes behind in some hidden markup, you'll need to configure
- * the <code>selectTemplate</code>. See {@link TributeFX#tributifyWebView(WebView, URL)}
+ * the <code>selectTemplate</code>. See {@link TributeFX#tributifyWebView(WebView, java.io.InputStream)}
  * <h3>Custom Mentionable Example</h3>
  * <pre>{@code
  * public class Person implements Mentionable {
@@ -83,7 +83,7 @@ public interface Mentionable {
      * The attribute that Tribute uses can be configured by changing the value of <code>lookup</code> in
      * the Tribute's <a href="https://github.com/zurb/tribute#a-collection">configuration</a>.
      * <p>
-     * Tributize your WebView with custom configuration using {@link TributeFX#tributifyWebView(WebView, URL)}
+     * Tributize your WebView with custom configuration using {@link TributeFX#tributifyWebView(WebView, java.io.InputStream)}
      */
     String getKey();
 
