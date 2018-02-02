@@ -4,7 +4,9 @@ import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -41,7 +43,7 @@ public class TributeFX {
     /**
      * The actual Tribute Library. Version 3.1.3. See <a href="https://github.com/zurb/tribute/releases">Tribute's Website</a>
      */
-    private static URL tributeLibrary = TributeFX.class.getResource("tribute-js/tribute.js");
+    private static InputStream tributeLibrary;
     /**
      * Tribute's stylesheet. Used internally by Tribute.
      */
@@ -56,6 +58,10 @@ public class TributeFX {
      * The text that is shown while the WebView is not in focus. Edit it with {@link TributeFX#turnPromptTextOn(String)}.
      */
     private static String promptText = "To mention someone try, \"Hey, @John Sample, can you...\"";
+
+    static {
+        tributeLibrary = TributeFX.class.getResourceAsStream("tribute-js/tribute.js");
+    }
 
     /**
      * <h2>Adds <a href="https://github.com/zurb/tribute">Tribute</a> to your webView, allowing for @mentions.</h2>
@@ -234,6 +240,30 @@ public class TributeFX {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return fileContents;
+    }
+
+    /**
+     * We use InputStreams instead because we'll be working with both WindowsFileSystems, when testing, and
+     * ZipFileSystems, in a jar in the realworld.
+     *
+     * The below was written by Viacheslav Vedenin. Look at his great answer: https://stackoverflow.com/a/35446009/5432315
+     * @return the file as a string
+     */
+    private static String readFile(InputStream inputStream) {
+        String fileContents = null;
+        try {
+            ByteArrayOutputStream result = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) != -1) {
+                result.write(buffer, 0, length);
+            }
+            // StandardCharsets.UTF_8.name() > JDK 7
+            fileContents = result.toString("UTF-8");
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return fileContents;
