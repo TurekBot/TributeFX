@@ -13,7 +13,19 @@ then, here's a wrapper for the JavaScript, Native `@mention` engine, [Tribute.js
 
 Or
 
-* Download/Clone the repo from here and build it for yourself with `mvn clean install`
+* Clone the repo from here
+     * In the root of the project run `mvn clean install`
+     * Either:
+         * Add the resulting jar (according to your IDE's instructions) as a dependency
+         * Include TributeFX as a dependency in your maven project
+         
+```
+    <dependency>
+        <groupId>tech.ugma.customcomponents.tributefx</groupId>
+        <artifactId>TributeFX</artifactId>
+        <version>0.3.0</version>
+    </dependency>
+```
 
 ### Demo
 [![Hunger Games Demo]][Hunger Games Demo]
