@@ -40,10 +40,10 @@ To pass in more attributes, like an email, see [`Mentionable`]'s Documentation.
 ### [Customization][get custom with it]
 Once you've cut your teeth on the basics, you can whip out some JavaScript and [get custom with it]:
 
-    URL customConfig = DemoWithCustomConfig.class.getResource("customTributeConfiguration.js");
+    InputStream customConfig = DemoWithCustomConfig.class.getResourceAsStream("customTributeConfiguration.js");
 
     TributeFX.tributifyWebView(webView, customConfig);
-
+    
     WebEngine webEngine = webView.getEngine();
     ArrayList<TributeFX.SimpleMentionable> mentionables = TributeFX.createSampleMentionableList();
     
