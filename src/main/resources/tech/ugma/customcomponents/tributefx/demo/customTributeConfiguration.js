@@ -1,10 +1,10 @@
 /*This is JavaScript*/
 var tribute = new Tribute({
     values: [],
-    selectTemplate: function(person) {
-      return '<span contenteditable="false" class="mention" name="' + person.original.key +
-      '" title="' + person.original.key + '">' + this.current.collection.trigger
-      + person.original[this.current.collection.fillAttr] + '</span>'
+    selectTemplate: function(item) {
+      return '<span contenteditable="false" class="mention" key="' + item.original.key +
+      '" title="' + item.original.key + '">' + this.current.collection.trigger
+      + item.original[this.current.collection.fillAttr] + '</span>'
     },
     allowSpaces: true,
     replaceTextSuffix: '',
