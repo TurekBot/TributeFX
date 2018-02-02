@@ -60,7 +60,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 * **Zurb** - *JavaScript @mention Engine* - [Tribute]
 * **Bradley Turek** - *Initial Wrapping of Tribute*
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors] who participated in this project.
 
 ## License
 
@@ -74,3 +74,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [`Mentionable`]: src/main/java/tech/ugma/customcomponents/tributefx/Mentionable.java
 [`SimpleMentionable`]: src/main/java/tech/ugma/customcomponents/tributefx/SimpleMentionable.java
 [tags on this repository]: https://github.com/TurekBot/TributeFX/tags
+[contributors]: https://github.com/TurekBot/TributeFX/contributors
