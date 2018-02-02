@@ -51,6 +51,11 @@ Once you've cut your teeth on the basics, you can whip out some JavaScript and [
     
 See [DemoWithCustomConfig] to really get jiggy with it.
 
+### Possible Use Cases
+ * Mentioning people
+ * Hashtags
+ * Category tags
+
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository]
