@@ -1,16 +1,15 @@
 package tech.ugma.customcomponents.tributefx;
 
 import javafx.concurrent.Worker;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 @SuppressWarnings("WeakerAccess")
@@ -99,6 +98,27 @@ public class TributeFX {
         }
 
         mimicBlueGlow(webView);
+
+        accountForWhenInsideAScrollPane(webView);
+
+    }
+
+    /**
+     * When a WebView is inside a ScrollPane and you press the space bar, the WebView, just
+     * lets that space continue on to tell the ScrollPane to scroll down and we <i>don't</i> want that.
+     * <p>
+     * Thanks to tobias for asking <a href="https://stackoverflow.com/q/14232183/5432315">the question</a>
+     * that helped me solve this.
+     */
+    private static void accountForWhenInsideAScrollPane(WebView webView) {
+        webView.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getEventType() == KeyEvent.KEY_PRESSED) {
+                // Consume Event before Bubbling Phase, -> otherwise ScrollPane scrolls
+                if (event.getCode() == KeyCode.SPACE) {
+                    event.consume();
+                }
+            }
+        });
 
     }
 
@@ -237,9 +257,10 @@ public class TributeFX {
 
     /**
      * We use InputStreams instead because we'll be working with both WindowsFileSystems, when testing, and
-     * ZipFileSystems, in a jar in the realworld.
-     *
+     * ZipFileSystems, in a jar in the real world.
+     * <p>
      * The below was written by Viacheslav Vedenin. Look at his great answer: https://stackoverflow.com/a/35446009/5432315
+     *
      * @return the file as a string
      */
     private static String readFile(InputStream inputStream) {
@@ -313,7 +334,7 @@ public class TributeFX {
      * <p>
      *
      * @param customConfig an InputStream to your JavaScript configuration file (I'd get it with something like <code>YourClass.class.getResourceAsStream("customConfiguration.js");</code>.)
-     *                        <p>Here's some <a href="https://stackoverflow.com/a/3862115/5432315">advice for getting resources.</a>
+     *                     <p>Here's some <a href="https://stackoverflow.com/a/3862115/5432315">advice for getting resources.</a>
      */
     public static void tributifyWebView(WebView webView, InputStream customConfig) {
         if (customConfig == null) {

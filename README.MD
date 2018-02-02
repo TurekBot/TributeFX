@@ -20,11 +20,11 @@ Or
          * Include TributeFX as a dependency in your maven project
          
 ```
-    <dependency>
-        <groupId>tech.ugma.customcomponents.tributefx</groupId>
-        <artifactId>TributeFX</artifactId>
-        <version>0.3.0</version>
-    </dependency>
+<dependency>
+    <groupId>tech.ugma.customcomponents.tributefx</groupId>
+    <artifactId>TributeFX</artifactId>
+    <version>0.3.0</version>
+</dependency>
 ```
 
 ### Demo
