@@ -286,7 +286,6 @@ public class TributeFX {
             //We need to put anything that has to do with the container (like attaching a tribute to it)
             //in a place that will only be invoked once the container/document is loaded.
             webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, currentState) -> {
-                System.out.println(webEngine.getLoadWorker().toString());
                 if (currentState.equals(Worker.State.SUCCEEDED)) {
                     webEngine.executeScript(commands);
                 }
