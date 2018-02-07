@@ -264,12 +264,6 @@ public class TributeFX {
      * @return the file as a string
      */
     private static String readFile(InputStream inputStream) {
-        if (inputStream.markSupported()) {
-            inputStream.mark(Integer.MAX_VALUE);
-        } else {
-            throw new UnsupportedOperationException("Unable to mark and reset this stream, sorry. We need" +
-                    " a stream that can be marked and reset. See: https://stackoverflow.com/a/38358023/5432315");
-        }
         String fileContents = null;
         try {
             ByteArrayOutputStream result = new ByteArrayOutputStream();
@@ -282,14 +276,6 @@ public class TributeFX {
             fileContents = result.toString("UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        if(inputStream.markSupported()) {
-            try {
-                inputStream.reset();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
         return fileContents;
