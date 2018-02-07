@@ -6,7 +6,7 @@
 
     <groupId>tech.ugma.customcomponents.tributefx</groupId>
     <artifactId>TributeFX</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.3</version>
 
 
     <name>${project.groupId}:${project.artifactId}</name>
