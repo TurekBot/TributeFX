@@ -15,19 +15,25 @@ import java.util.ArrayList;
 public class DemoWithCustomConfig extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        WebView webView = new WebView();
-        BorderPane root = new BorderPane(webView);
+        WebView webView1 = new WebView();
+        WebView webView2 = new WebView();
+        BorderPane root = new BorderPane();
+        root.setLeft(webView1);
+        root.setRight(webView2);
         Scene scene = new Scene(root);
 
         //Add your own custom Tribute configuration (see https://github.com/zurb/tribute#a-collection)
         InputStream customConfig = DemoWithCustomConfig.class.getResourceAsStream("customTributeConfiguration.js");
 
-        TributeFX.tributifyWebView(webView, customConfig);
+        TributeFX.tributifyWebView(webView1, customConfig);
+        TributeFX.tributifyWebView(webView2, customConfig);
 
-        WebEngine webEngine = webView.getEngine();
+        WebEngine webEngine1 = webView1.getEngine();
+        WebEngine webEngine2 = webView2.getEngine();
         ArrayList<SimpleMentionable> mentionables = TributeFX.createSampleMentionableList();
 
-        TributeFX.addMentionables(mentionables, webEngine);
+        TributeFX.addMentionables(mentionables, webEngine1);
+        TributeFX.addMentionables(mentionables, webEngine2);
 
         //Uncomment to add your own style
 //        URL customCSS = DemoWithCustomConfig.class.getResource("customTributeStyle.css");
