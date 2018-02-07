@@ -25,25 +25,6 @@ public class TributeFX {
     private static URL containerStyleSheet = TributeFX.class.getResource("container.css");
 
     /**
-     * Configures some prompt text that disappears when the user clicks focuses the WebView.
-     * <p>
-     * Change the text using {@link TributeFX#turnPromptTextOn(java.lang.String)}.
-     */
-    // FIXME: 1/31/2018 Change this to be configurable per WebView, not TributeFX class.
-    private static InputStream promptTextConfiguration;
-
-    /**
-     * The default configuration for the Tribute. You can replace it with your own using {@link TributeFX#changeDefaultTributeConfiguration(InputStream)}.
-     * However, to just configure a certain WebView (usual use case) definitely use {@link TributeFX#tributifyWebView(WebView, InputStream)} to pass in your
-     * custom configuration JavaScript file.
-     */
-    private static InputStream tributeConfiguration;
-
-    /**
-     * The actual Tribute Library. Version 3.1.3. See <a href="https://github.com/zurb/tribute/releases">Tribute's Website</a>
-     */
-    private static InputStream tributeLibrary;
-    /**
      * Tribute's stylesheet. Used internally by Tribute.
      */
     private static URL tributeLibraryStylesheet = TributeFX.class.getResource("tribute-js/tribute.css");
@@ -58,10 +39,34 @@ public class TributeFX {
      */
     private static String promptText = "To mention someone try, \"Hey, @John Sample, can you...\"";
 
+    /**
+     * The actual Tribute Library. Version 3.1.3. See <a href="https://github.com/zurb/tribute/releases">Tribute's Website</a>
+     */
+    private static final String tributeLibraryString;
+
+    /**
+     * The default configuration for the Tribute.
+     * To configure a WebView with your *own* configuration (usual use case) definitely use
+     * {@link TributeFX#tributifyWebView(WebView, InputStream)} to pass in your
+     * custom configuration JavaScript file.
+     */
+    private static final String tributeConfigurationString;
+
+    /**
+     * Configures some prompt text that disappears when the user clicks focuses the WebView.
+     * <p>
+     * Change the text using {@link TributeFX#turnPromptTextOn(java.lang.String)}.
+     */
+    // FIXME: 1/31/2018 Change this to be configurable per WebView, not TributeFX class.
+    private static final String promptTextConfigurationString;
+
     static {
-        tributeLibrary = TributeFX.class.getResourceAsStream("tribute-js/tribute.js");
-        tributeConfiguration = TributeFX.class.getResourceAsStream("configureTribute.js");
-        promptTextConfiguration = TributeFX.class.getResourceAsStream("configurePromptText.js");
+        InputStream tributeLibrary = TributeFX.class.getResourceAsStream("tribute-js/tribute.js");
+        tributeLibraryString = readFile(tributeLibrary);
+        InputStream tributeConfiguration = TributeFX.class.getResourceAsStream("configureTribute.js");
+        tributeConfigurationString = readFile(tributeConfiguration);
+        InputStream promptTextConfiguration = TributeFX.class.getResourceAsStream("configurePromptText.js");
+        promptTextConfigurationString = readFile(promptTextConfiguration);
     }
 
     /**
@@ -123,7 +128,7 @@ public class TributeFX {
     }
 
     private static void addTributeFiles(WebEngine webEngine) {
-        webEngine.executeScript(readFile(tributeLibrary));
+        webEngine.executeScript(tributeLibraryString);
         /*The tribute stylesheet is loaded *in* the default HTML container.*/
 
         // TODO: 1/31/2018 support using user HTML (the problem with this is how right now we're using relative css file references, you know, `<link rel="stylesheet" href="tribute-js/tribute.css"/>`, and changing the document's location or even loading it from memory causes the document's baseURI to change and that breaks the relative references to the CSS files)
@@ -178,15 +183,28 @@ public class TributeFX {
 //        });
     }
 
-    private static void configureTribute(WebEngine webEngine, InputStream customConfigURL) {
-        InputStream configuration;
-        if (customConfigURL == null) {
-            configuration = tributeConfiguration;
+    private static void configureTribute(WebEngine webEngine, InputStream customConfigInputStream) {
+        String configurationFile;
+        if (customConfigInputStream == null) {
+            configurationFile = tributeConfigurationString;
         } else {
-            configuration = customConfigURL;
+            //Since the user is probably getting this from a local file system we can mark and then reset
+            // their stream
+            if (customConfigInputStream.markSupported()) {
+                //Mark here at the beginning so that we can reset it back to this point after it's been read.
+                customConfigInputStream.mark(Integer.MAX_VALUE);
+            } else {
+                throw new UnsupportedOperationException("Sorry, your InputStream needs to be one that is resettable." +
+                        " See https://stackoverflow.com/a/38358023/5432315");
+            }
+            configurationFile = readFile(customConfigInputStream);
+            try {
+                //Now reset the stream to the point we marked it at before; this way it can be reused.
+                customConfigInputStream.reset();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
-        String configurationFile = readFile(configuration);
 
         executeJavaScriptCommands(webEngine, configurationFile);
     }
@@ -238,10 +256,10 @@ public class TributeFX {
     }
 
     private static void configurePromptText(WebEngine webEngine) {
-        String promptTextConfigurationScript = readFile(promptTextConfiguration);
+        String promptTextConfigurationScript = promptTextConfigurationString;
 
-        final String replace = "PROMPT_TEXT_WILL_BE_REPLACED_HERE";
-        promptTextConfigurationScript = promptTextConfigurationScript.replace(replace, promptText);
+        final String placeholder = "PROMPT_TEXT_WILL_BE_REPLACED_HERE";
+        promptTextConfigurationScript = promptTextConfigurationScript.replace(placeholder, promptText);
 
         executeJavaScriptCommands(webEngine, promptTextConfigurationScript);
     }
@@ -356,15 +374,6 @@ public class TributeFX {
 
     public static void turnPromptTextOff() {
         showPromptText = false;
-    }
-
-    public static InputStream getTributeConfiguration() {
-        return tributeConfiguration;
-    }
-
-
-    public static void changeDefaultTributeConfiguration(InputStream tributeConfiguration) {
-        TributeFX.tributeConfiguration = tributeConfiguration;
     }
 
     /**
