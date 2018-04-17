@@ -338,6 +338,9 @@ public class TributeFX {
      *
      * @param customConfig an InputStream to your JavaScript configuration file (I'd get it with something like <code>YourClass.class.getResourceAsStream("customConfiguration.js");</code>.)
      *                     <p>Here's some <a href="https://stackoverflow.com/a/3862115/5432315">advice for getting resources.</a>
+     *                     <p><b>Note that because of file-system limitations, the input stream
+     *                     can only be used once.</b> If you want to apply the same configuration twice just get the
+     *                     resource again.
      */
     public static void tributifyWebView(WebView webView, InputStream customConfig) {
         if (customConfig == null) {

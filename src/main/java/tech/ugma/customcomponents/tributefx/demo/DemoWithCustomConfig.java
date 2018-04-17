@@ -22,10 +22,14 @@ public class DemoWithCustomConfig extends Application {
         root.setRight(webView2);
         Scene scene = new Scene(root);
 
-        //Add your own custom Tribute configuration (see https://github.com/zurb/tribute#a-collection)
+        // Add your own custom Tribute configuration (see https://github.com/zurb/tribute#a-collection)
         InputStream customConfig = DemoWithCustomConfig.class.getResourceAsStream("customTributeConfiguration.js");
 
         TributeFX.tributifyWebView(webView1, customConfig);
+
+        // You'll need to create your stream again if you want to use it again—blame ZipFileSystems for not having resettable streams.
+        customConfig = DemoWithCustomConfig.class.getResourceAsStream("customTributeConfiguration.js");
+
         TributeFX.tributifyWebView(webView2, customConfig);
 
         WebEngine webEngine1 = webView1.getEngine();
@@ -35,7 +39,7 @@ public class DemoWithCustomConfig extends Application {
         TributeFX.addMentionables(mentionables, webEngine1);
         TributeFX.addMentionables(mentionables, webEngine2);
 
-        //Uncomment to add your own style
+        // Uncomment to add your own style
 //        URL customCSS = DemoWithCustomConfig.class.getResource("customTributeStyle.css");
 //        TributeFX.setWebViewInternalStyleSheet(webView, customCSS);
 
