@@ -87,10 +87,10 @@ public class TributeFX {
         // Load HTML
         webEngine.load(container.toExternalForm());
 
-        //Add Tribute files
+        // Add Tribute files
         addTributeFiles(webEngine);
 
-        //Configure our tribute
+        // Configure our tribute
         configureTribute(webEngine, customConfigURL);
 
         if (mentionables != null) {
@@ -188,22 +188,7 @@ public class TributeFX {
         if (customConfigInputStream == null) {
             configurationFile = tributeConfigurationString;
         } else {
-            //Since the user is probably getting this from a local file system we can mark and then reset
-            // their stream
-            if (customConfigInputStream.markSupported()) {
-                //Mark here at the beginning so that we can reset it back to this point after it's been read.
-                customConfigInputStream.mark(Integer.MAX_VALUE);
-            } else {
-                throw new UnsupportedOperationException("Sorry, your InputStream needs to be one that is resettable." +
-                        " See https://stackoverflow.com/a/38358023/5432315");
-            }
             configurationFile = readFile(customConfigInputStream);
-            try {
-                //Now reset the stream to the point we marked it at before; this way it can be reused.
-                customConfigInputStream.reset();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
         executeJavaScriptCommands(webEngine, configurationFile);
@@ -302,8 +287,8 @@ public class TributeFX {
     private static void executeJavaScriptCommands(WebEngine webEngine, String commands) {
         Worker.State state = webEngine.getLoadWorker().getState();
         if (webEngine.getDocument() == null) {
-            //We need to put anything that has to do with the container (like attaching a tribute to it)
-            //in a place that will only be invoked once the container/document is loaded.
+            // We need to put anything that has to do with the container (like attaching a tribute to it)
+            // in a place that will only be invoked once the container/document is loaded.
             webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, currentState) -> {
                 if (currentState.equals(Worker.State.SUCCEEDED)) {
                     webEngine.executeScript(commands);
