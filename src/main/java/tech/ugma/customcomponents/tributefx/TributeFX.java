@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
 public class TributeFX {
@@ -72,7 +73,7 @@ public class TributeFX {
     /**
      * <h2>Adds <a href="https://github.com/zurb/tribute">Tribute</a> to your webView, allowing for @mentions.</h2>
      * <h3>Configures a webView with the <i>default</i> configuration; to have {@link Mentionable mentionables} added later.</h3>
-     * To add mentionables use {@link TributeFX#addMentionables(ArrayList, WebEngine)}
+     * To add mentionables use {@link TributeFX#addMentionables(List, WebEngine)}
      * <p>
      * If you want to customize your Tribute, see {@link TributeFX#tributifyWebView(WebView, InputStream)}
      */
@@ -199,9 +200,9 @@ public class TributeFX {
      * <p>
      * This will add your mentionables to the tribute, so that they'll show up when the user types "@"
      * <p>
-     * For custom tribute configurations <small>(where you may have changed/multiple tribute variable names)</small> use {@link TributeFX#addMentionables(java.util.ArrayList, javafx.scene.web.WebEngine, java.lang.String, int)}
+     * For custom tribute configurations <small>(where you may have changed/multiple tribute variable names)</small> use {@link TributeFX#addMentionables(List, WebEngine, String, int)}
      */
-    public static void addMentionables(ArrayList<? extends Mentionable> mentionables, WebEngine webEngine) {
+    public static void addMentionables(List<? extends Mentionable> mentionables, WebEngine webEngine) {
         addMentionables(mentionables, webEngine, "tribute", 0);
     }
 
@@ -213,9 +214,9 @@ public class TributeFX {
      * Be sure to specify the tribute variable's name ("tribute" if you kept it the same) and the collection's index
      * (0 if you only have one).
      * <p>
-     * <i>If you're using the defaults</i>, for convenience, use {@link TributeFX#addMentionables(ArrayList, WebEngine)}
+     * <i>If you're using the defaults</i>, for convenience, use {@link TributeFX#addMentionables(List, WebEngine)}
      */
-    public static void addMentionables(ArrayList<? extends Mentionable> mentionables, WebEngine webEngine, String tributeVariableName, int collectionIndex) {
+    public static void addMentionables(List<? extends Mentionable> mentionables, WebEngine webEngine, String tributeVariableName, int collectionIndex) {
         //Build javascript list
         StringBuilder list = new StringBuilder();
         for (int i = 0; i < mentionables.size(); i++) {
@@ -331,7 +332,7 @@ public class TributeFX {
      * </ul>
      * </ul>
      * <p>
-     * To add mentionables use {@link TributeFX#addMentionables(ArrayList, WebEngine, String, int)} and specify your
+     * To add mentionables use {@link TributeFX#addMentionables(List, WebEngine, String, int)} and specify your
      * Tribute variable's name <small>(probably <code>tribute</code>)</small> and the collection you want to add to <small>(0, if you only
      * have one configuration/collection object)</small>.
      * <p>
