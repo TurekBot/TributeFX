@@ -59,11 +59,11 @@ public class DemoTributeFX extends Application {
 
     private ArrayList<Person> createList() {
         ArrayList<Person> mentionables = new ArrayList<>();
-        mentionables.add(new Person("Brad Turek", "bturek", "UgmaDevelopment@gmail.com"));
-        mentionables.add(new Person("Rick Turek", "rturek", "Rick.Turek@sundance.net"));
-        mentionables.add(new Person("Greg Gabbitas", "ggabbitas", "Greg.Gabbitas@sundance.net"));
-        mentionables.add(new Person("Deborah Kaiser", "dkaiser", "Deborah.Kaiser@sundance.net"));
-        mentionables.add(new Person("John Sample", "jsample", "John.Sample@gmail.com"));
+        mentionables.add(new Person("Erik Dickerson", "edickerson", "ErikDickerson@gmail.com"));
+        mentionables.add(new Person("Mark Cornish", "mcornish", "MarkCornish@gmail.com"));
+        mentionables.add(new Person("Carly Eaton", "ceaton", "CarlyEaton@gmail.com"));
+        mentionables.add(new Person("Natasha Aldred", "naldred", "NatashaAldred@gmail.com"));
+        mentionables.add(new Person("Hadiqa Hirst", "hhirst", "HadiqaHirst@gmail.com"));
         return mentionables;
     }
 
